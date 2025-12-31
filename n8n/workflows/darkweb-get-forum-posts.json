@@ -724,7 +724,7 @@
     },
     {
       "parameters": {
-        "sseEndpoint": "http://154.221.23.113:8831/sse",
+        "sseEndpoint": "={{ $env.PLAYWRIGHT_MCP_ENDPOINT }}",
         "include": "except",
         "excludeTools": [
           "browser_file_upload",

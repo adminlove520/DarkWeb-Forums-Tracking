@@ -11,9 +11,11 @@ USER root
 ENTRYPOINT []
 
 # Patch to allow external access (remove "Access is only allowed at localhost" check)
-# CRITICAL: Zeabur internal network is NOT localhost, so this patch is required.
-RUN find /app -name "*.js" -type f -exec sed -i 's/if (.* !== .*localhost.*) {/if (false) {/g' {} + || true
-RUN find /app -name "*.js" -type f -exec sed -i 's/Access is only allowed at/Access Allowed (Patched) /g' {} + || true
+# CRITICAL: We force the code to think the host is always 'localhost' by replacing the property access.
+# This bypasses the security check: if (request.headers.host !== 'localhost') ...
+RUN find /app -name "*.js" -type f -exec sed -i "s/request.headers.host/'localhost'/g" {} + || true
+RUN find /app -name "*.js" -type f -exec sed -i "s/req.headers.host/'localhost'/g" {} + || true
+RUN find /app -name "*.js" -type f -exec sed -i "s/request.headers\['host'\]/'localhost'/g" {} + || true
 
 # Set environment variables
 ENV NODE_ENV=production
