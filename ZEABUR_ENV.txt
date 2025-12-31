@@ -1,0 +1,41 @@
+# =================================================================
+# Zeabur 环境变量配置清单 (最终版 - 已自动填入您截图里的信息)
+# 直接复制以下内容到 N8N 服务的 Variables -> Edit Raw 即可
+# =================================================================
+
+# --- 核心配置 ---
+GENERIC_TIMEZONE=Asia/Shanghai
+N8N_PORT=5678
+PLAYWRIGHT_MCP_PORT=8831
+
+# --- 数据库连接 (已为您填好) ---
+
+# PostgreSQL (来自您的截图)
+DB_TYPE=postgresdb
+DB_POSTGRESDB_HOST=sjc1.clusters.zeabur.com
+DB_POSTGRESDB_PORT=23155
+DB_POSTGRESDB_DATABASE=zeabur
+DB_POSTGRESDB_USER=root
+# 您的数据库密码 (来自截图)
+DB_POSTGRESDB_PASSWORD=b7D0U38jEJy6hPAHu9XTg5Sfi42Yma1V
+
+# Redis (来自您的截图)
+QUEUE_BULL_REDIS_HOST=sjc1.clusters.zeabur.com
+QUEUE_BULL_REDIS_PORT=20213
+# 您的 Redis 密码 (来自截图)
+QUEUE_BULL_REDIS_PASSWORD=wK1yXjApmhlVF4ZbQLi5J7v8609IU2s3
+
+# --- N8N 安全配置 ---
+# 建议您自己改一下这个 Key，虽然不改也能跑
+N8N_ENCRYPTION_KEY=sb_publishable_ZT9Eca9irbG8drFCjUtLMA_s2_iUC2X
+
+# --- Supabase 配置 ---
+SUPABASE_URL=https://mllfrjetoelmjmgdemlm.supabase.co
+
+# --- Playwright 配置 ---
+PLAYWRIGHT_VIEWPORT_SIZE=1280,720
+
+# --- 内部服务互联 ---
+# 注意：这个还需要您创建好 Playwright 服务后，确认它的内部域名
+# 如果您还没创建 Playwright 服务，这行先留着，或者填 http://playwright-mcp:8831
+PLAYWRIGHT_MCP_URL=http://playwright-mcp:8831

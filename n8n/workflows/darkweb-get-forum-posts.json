@@ -724,7 +724,7 @@
     },
     {
       "parameters": {
-        "sseEndpoint": "http://host.docker.internal:8831/sse",
+        "sseEndpoint": "http://154.221.23.113:8831/sse",
         "include": "except",
         "excludeTools": [
           "browser_file_upload",
