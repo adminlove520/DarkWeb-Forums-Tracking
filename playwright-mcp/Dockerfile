@@ -22,6 +22,11 @@ RUN cd /opt && \
 RUN mkdir -p /screenshots /app/browser-data/sessions /shared-browser-data && \
     chown -R 1000:1000 /screenshots /app/browser-data /shared-browser-data
 
+# Patch to allow external access (remove "Access is only allowed at localhost" check)
+# This finds the JS file containing the error message and removes the conditional check block
+RUN find /app -name "*.js" -type f -exec sed -i 's/if (.* !== .*localhost.*) {/if (false) {/g' {} + || true
+RUN find /app -name "*.js" -type f -exec sed -i 's/Access is only allowed at/Access Allowed (Patched) /g' {} + || true
+
 # Create startup script
 COPY --chmod=755 <<'EOF' /app/start-with-vnc.sh
 #!/bin/bash

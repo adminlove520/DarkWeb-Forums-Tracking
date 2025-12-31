@@ -1,0 +1,25 @@
+# syntax=docker/dockerfile:1
+# FILE: playwright-mcp/Dockerfile.zeabur
+# Special lightweight version for Zeabur (No VNC, No GUI) to save RAM.
+
+# Use the same base image
+FROM mcr.m.daocloud.io/playwright/mcp:latest
+
+USER root
+
+# Patch to allow external access (remove "Access is only allowed at localhost" check)
+# CRITICAL: Zeabur internal network is NOT localhost, so this patch is required.
+RUN find /app -name "*.js" -type f -exec sed -i 's/if (.* !== .*localhost.*) {/if (false) {/g' {} + || true
+RUN find /app -name "*.js" -type f -exec sed -i 's/Access is only allowed at/Access Allowed (Patched) /g' {} + || true
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV RAYCAST_MCP_SERVICE_PORT=8831
+
+USER 1000
+WORKDIR /app
+
+EXPOSE 8831
+
+# Force 0.0.0.0 binding just in case
+CMD ["node", "cli.js", "--host", "0.0.0.0", "--port", "8831"]
