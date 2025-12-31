@@ -11,9 +11,9 @@ FROM n8nio/n8n:latest
 # Switch to root to copy files
 USER root
 
-# Copy the localization files from the builder stage
-# This bypasses the need to install git/curl in the n8n image, resolving OS compatibility issues
-COPY --from=builder /tmp/n8n-zh/editor-ui/dist/ /usr/local/lib/node_modules/n8n/dist/editor-ui/
+# Copy the localization file from the builder stage
+# The repo structure is languages/zh-CN.json
+COPY --from=builder /tmp/n8n-zh/languages/zh-CN.json /usr/local/lib/node_modules/n8n/dist/editor-ui/src/plugins/i18n/locales/zh-CN.json
 
 # Switch back to node user
 USER node
