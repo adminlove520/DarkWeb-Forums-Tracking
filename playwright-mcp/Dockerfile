@@ -75,8 +75,11 @@ echo "🌐 Connect via VNC client to: localhost:5900"
 echo "🌐 Web VNC available at: http://localhost:6080"
 
 # Start Playwright MCP with shared browser and user data
+# Start Playwright MCP with shared browser and user data (Force 0.0.0.0 binding)
 echo "🎭 Starting Playwright MCP..."
-exec node cli.js --browser chromium --host 0.0.0.0 --port ${PLAYWRIGHT_MCP_PORT:-8831} \
+export HOST=0.0.0.0
+export PORT=${PLAYWRIGHT_MCP_PORT:-8831}
+exec node cli.js --browser chromium --host 0.0.0.0 --port ${PORT} \
     --viewport-size "${PLAYWRIGHT_VIEWPORT_SIZE:-1280,720}" \
     --image-responses allow --ignore-https-errors \
     --executable-path /ms-playwright/chromium-*/chrome-linux64/chrome \
