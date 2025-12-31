@@ -4,7 +4,10 @@ FROM n8nio/n8n:latest
 USER root
 
 # Install git and curl for fetching language packs
-RUN apk add --no-cache git curl
+# n8n:latest is Debian-based, so use apt-get instead of apk
+RUN apt-get update && \
+    apt-get install -y git curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install n8n-i18n-chinese (Simple replacement method)
 # We clone the repo and copy the dist files to the n8n installation directory
