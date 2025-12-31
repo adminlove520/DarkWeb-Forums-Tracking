@@ -90,6 +90,7 @@ services:
       - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true
       - NODE_ENV=production
       - N8N_DISABLE_UI=${N8N_DISABLE_UI:-false}
+      - N8N_SECURE_COOKIE=false
 
       # User Management & Authentication
       - N8N_USER_MANAGEMENT_DISABLED=false
