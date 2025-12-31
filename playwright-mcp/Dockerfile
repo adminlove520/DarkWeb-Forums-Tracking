@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install noVNC for web browser access
 RUN cd /opt && \
-    wget -qO- https://github.com/novnc/noVNC/archive/v1.4.0.tar.gz | tar xz && \
+    wget -qO- https://gh-proxy.com/https://github.com/novnc/noVNC/archive/v1.4.0.tar.gz | tar xz && \
     mv noVNC-1.4.0 noVNC && \
     ln -s /opt/noVNC/vnc.html /opt/noVNC/index.html
 
