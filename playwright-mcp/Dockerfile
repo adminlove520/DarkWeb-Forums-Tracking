@@ -8,7 +8,7 @@ USER root
 # Install VNC and minimal GUI
 RUN apt-get update && apt-get install -y \
     curl wget ca-certificates \
-    xvfb x11vnc fluxbox \
+    xvfb x11vnc fluxbox xterm \
     websockify x11-utils \
     && rm -rf /var/lib/apt/lists/*
 
