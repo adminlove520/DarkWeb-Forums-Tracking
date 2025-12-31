@@ -233,7 +233,7 @@ services:
   # Simple PostgreSQL for n8n data storage only
   db:
     container_name: darkweb-forums-tracker-db
-    image: postgres:15
+    image: postgres:15-alpine
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}

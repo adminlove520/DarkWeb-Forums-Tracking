@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 # FILE: playwright-mcp/Dockerfile
-FROM mcr.microsoft.com/playwright/mcp:latest
+# Use DaoCloud mirror for faster access on CN-optimized HK VPS
+FROM mcr.m.daocloud.io/playwright/mcp:latest
 
 USER root
 
