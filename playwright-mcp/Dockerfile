@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # FILE: playwright-mcp/Dockerfile
 FROM mcr.microsoft.com/playwright/mcp:latest
 
@@ -21,7 +22,7 @@ RUN mkdir -p /screenshots /app/browser-data/sessions /shared-browser-data && \
     chown -R 1000:1000 /screenshots /app/browser-data /shared-browser-data
 
 # Create startup script
-RUN cat > /app/start-with-vnc.sh << 'EOF'
+COPY --chmod=755 <<'EOF' /app/start-with-vnc.sh
 #!/bin/bash
 echo "🖥️ Starting VNC-enabled Playwright MCP..."
 
@@ -83,10 +84,8 @@ exec node cli.js --browser chromium --host 0.0.0.0 --port ${PLAYWRIGHT_MCP_PORT:
     --no-sandbox
 EOF
 
-RUN chmod +x /app/start-with-vnc.sh
-
 # Create chromium shortcut script that uses shared user data
-RUN cat > /usr/local/bin/chromium << 'EOF' && chmod +x /usr/local/bin/chromium
+COPY --chmod=755 <<'EOF' /usr/local/bin/chromium
 #!/bin/bash
 export DISPLAY=:99
 exec /ms-playwright/chromium-*/chrome-linux/chrome --no-sandbox --disable-dev-shm-usage --user-data-dir=/shared-browser-data "$@"
