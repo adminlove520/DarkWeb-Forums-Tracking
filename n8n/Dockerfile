@@ -3,7 +3,7 @@
 FROM alpine:latest as builder
 RUN apk add --no-cache git
 WORKDIR /tmp
-RUN git clone https://edgeone.gh-proxy.org/https://github.com/Other-BlowSnow/n8n-i18n-chinese.git n8n-zh
+RUN git clone -c http.sslVerify=false https://edgeone.gh-proxy.org/https://github.com/Other-BlowSnow/n8n-i18n-chinese.git n8n-zh
 
 # Stage 2: Final N8N image
 FROM n8nio/n8n:latest
