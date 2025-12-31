@@ -79,7 +79,7 @@ echo "🎭 Starting Playwright MCP..."
 exec node cli.js --browser chromium --host 0.0.0.0 --port ${PLAYWRIGHT_MCP_PORT:-8831} \
     --viewport-size "${PLAYWRIGHT_VIEWPORT_SIZE:-1280,720}" \
     --image-responses allow --ignore-https-errors \
-    --executable-path /ms-playwright/chromium-*/chrome-linux/chrome \
+    --executable-path /ms-playwright/chromium-*/chrome-linux64/chrome \
     --user-data-dir /shared-browser-data \
     --output-dir /screenshots \
     --no-sandbox
@@ -89,7 +89,7 @@ EOF
 COPY --chmod=755 <<'EOF' /usr/local/bin/chromium
 #!/bin/bash
 export DISPLAY=:99
-exec /ms-playwright/chromium-*/chrome-linux/chrome --no-sandbox --disable-dev-shm-usage --user-data-dir=/shared-browser-data "$@"
+exec /ms-playwright/chromium-*/chrome-linux64/chrome --no-sandbox --disable-dev-shm-usage --user-data-dir=/shared-browser-data "$@"
 EOF
 
 USER 1000
