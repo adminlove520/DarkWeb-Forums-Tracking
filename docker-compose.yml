@@ -76,7 +76,9 @@ services:
   # -----------------------------------------------------------------
   n8n:
     container_name: darkweb-forums-tracker-n8n
-    image: n8nio/n8n:latest
+    build: 
+      context: ./n8n
+      dockerfile: Dockerfile
     user: "1000:1000"
     restart: unless-stopped
     ports: ["${N8N_PORT:-5678}:5678"]
@@ -145,7 +147,10 @@ services:
   # -----------------------------------------------------------------
   n8n-worker:
     container_name: darkweb-forums-tracker-n8n-worker
-    image: n8nio/n8n:latest
+    build: 
+      context: ./n8n
+      dockerfile: Dockerfile
+
     user: "1000:1000"
     restart: unless-stopped
     command: worker

@@ -14,11 +14,11 @@
         208
       ],
       "id": "0fce51c7-b98f-40e6-a92a-a02243851f2f",
-      "name": "Structured Output Parser"
+      "name": "结构化输出解析器"
     },
     {
       "parameters": {
-        "description": "=## Using the think tool\n\nBefore taking any action or responding after receiving tool results, use the think tool as a scratchpad to:\n- List the specific rules that apply to the current forum extraction request\n- Check if navigation and data access was successful\n- Verify that extracted data is real (not fake/example data)\n- Plan the correct response status based on actual results\n\nHere are examples of what to iterate over inside the think tool:\n\n<think_tool_example_1>\nForum page extraction request for DarkForums.st\n- Rules to verify:\n  * Must navigate to actual URL successfully\n  * Must capture real browser snapshot\n  * Must extract only real thread data from snapshot\n  * Never generate fake/example data\n- Status determination:\n  * If navigation failed → \"page_unreachable\"\n  * If CAPTCHA/DDoS-Guard detected → \"bot_captcha\"\n  * If login redirect → \"login_needed\"\n  * If real data extracted → \"success\" \n- Plan: Navigate → snapshot → verify real content → extract real data only\n</think_tool_example_1>\n\n<think_tool_example_2>\nBrowser navigation completed, checking snapshot results\n- Navigation status: ✅ Success - no timeouts or errors\n- Snapshot content analysis:\n  * Page shows: Real forum layout with thread listings\n  * Thread titles visible: \"Morocco PMMP Database\", \"Twitter Leak 200M\"\n  * Authors visible: \"B4baYega\", \"Lucifer\" \n  * Real dates: \"1 minute ago\", \"40 minutes ago\"\n- Data validation:\n  * All thread data comes from actual snapshot ✅\n  * No fake usernames like \"Username\" or \"Example\" ✅\n  * URLs are real forum paths ✅\n- Plan: Extract real data and return success status with actual forum posts\n</think_tool_example_2>\n\n<think_tool_example_3>\nBrowser navigation attempt results\n- Navigation status: ❌ Failed - connection timeout after 30s\n- Error details: \"net::ERR_TIMED_OUT\"\n- Snapshot result: No usable content captured\n- Data available: None - cannot extract anything\n- Rules check:\n  * Cannot generate fake data ✅\n  * Must report navigation failure ✅\n- Plan: Return failed status with \"page_unreachable\" and error details\n</think_tool_example_3>"
+        "description": "=## 使用思考(Think)工具\n\n在接收到工具结果后采取任何操作或响应之前，请使用思考工具作为草稿本来：\n- 列出适用于当前论坛提取请求的具体规则\n- 检查导航和数据访问是否成功\n- 验证提取的数据是否真实（而非伪造/示例数据）\n- 根据实际结果规划正确的响应状态\n\n以下是在思考工具中迭代的示例：\n\n<think_tool_example_1>\nDarkForums.io 的论坛页面提取请求\n- 验证规则：\n  * 必须成功导航到实际URL\n  * 必须捕获真实的浏览器快照\n  * 必须仅从快照中提取真实的帖子数据\n  * 绝不生成伪造/示例数据\n- 状态确定：\n  * 如果导航失败 → \"page_unreachable\"\n  * 如果检测到 CAPTCHA/DDoS-Guard → \"bot_captcha\"\n  * 如果重定向到登录 → \"login_needed\"\n  * 如果提取到真实数据 → \"success\" \n- 计划：导航 → 快照 → 验证真实内容 → 仅提取真实数据\n</think_tool_example_1>\n\n<think_tool_example_2>\n浏览器导航已完成，正在检查快照结果\n- 导航状态：✅ 成功 - 无超时或错误\n- 快照内容分析：\n  * 页面显示：具有帖子列表的真实论坛布局\n  * 帖子标题可见：\"Morocco PMMP Database\", \"Twitter Leak 200M\"\n  * 作者可见：\"B4baYega\", \"Lucifer\" \n  * 真实日期：\"1 minute ago\", \"40 minutes ago\"\n- 数据验证：\n  * 所有帖子数据均来自实际快照 ✅\n  * 没有像 \"Username\" 或 \"Example\" 这样的伪造用户名 ✅\n  * URL 是真实的论坛路径 ✅\n- 计划：提取真实数据并返回包含实际论坛帖子的成功状态\n</think_tool_example_2>\n\n<think_tool_example_3>\n浏览器导航尝试结果\n- 导航状态：❌ 失败 - 30秒后连接超时\n- 错误详情：\"net::ERR_TIMED_OUT\"\n- 快照结果：未捕获可用内容\n- 可用数据：无 - 无法提取任何内容\n- 规则检查：\n  * 无法生成伪造数据 ✅\n  * 必须报告导航失败 ✅\n- 计划：返回失败状态，包含 \"page_unreachable\" 和错误详情\n</think_tool_example_3>"
       },
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1,
@@ -27,7 +27,7 @@
         208
       ],
       "id": "dec4323d-eebe-46b2-992b-f3f65888bc9b",
-      "name": "Think"
+      "name": "思考(Think)工具"
     },
     {
       "parameters": {
@@ -56,7 +56,7 @@
         -304
       ],
       "id": "78ab9a0d-b84b-474b-826a-0830ccfb5060",
-      "name": "Supabase RPC Check Existing URLs",
+      "name": "Supabase RPC 检查现有URL",
       "retryOnFail": true,
       "maxTries": 2,
       "waitBetweenTries": 5000,
@@ -91,7 +91,7 @@
         -544
       ],
       "id": "5c20cc93-12c7-4a30-b6eb-400a437e668e",
-      "name": "Merge Only New URLs",
+      "name": "合并仅新URL",
       "alwaysOutputData": true
     },
     {
@@ -105,7 +105,7 @@
           "values": [
             {
               "description": "=### {{ $json.forum_name }}\n- {{ $json.forum_url_path }}",
-              "author": "=🔄 Forum tracking started",
+              "author": "=🔄 论坛追踪已启动",
               "color": "#3498DB",
               "timestamp": "={{ $now.toISO() }}"
             }
@@ -119,7 +119,7 @@
         -304
       ],
       "id": "ddb72e5b-71e7-40e9-a8bb-444240271480",
-      "name": "Inform Tracking Started",
+      "name": "通知开始追踪",
       "webhookId": "7b0843fe-ee9e-45de-8198-74a6adc41eb2",
       "credentials": {
         "discordWebhookApi": {
@@ -138,8 +138,8 @@
         "embeds": {
           "values": [
             {
-              "description": "=### {{ $('Loop Over URLs').item.json.forum_name }}\n- {{ $('Loop Over URLs').item.json.forum_url_path }}\n> AI agent tried to obtain data, but an error occurred.\n> {{ $json.output?.error_details || $json.error || $json.output.failed_cause || 'Unknown error occurred' }}\n`Check workflow logs • Manual review required`",
-              "author": "=⚠️ Forum tracking failed",
+              "description": "=### {{ $('循环URL').item.json.forum_name }}\n- {{ $('循环URL').item.json.forum_url_path }}\n> AI 智能体尝试获取数据，但发生了错误。\n> {{ $json.output?.error_details || $json.error || $json.output.failed_cause || '发生了未知错误' }}\n`查看工作流日志 • 需要人工审查`",
+              "author": "=⚠️ 论坛追踪失败",
               "color": "#E74C3C",
               "timestamp": "={{ $now.toISO() }}"
             }
@@ -153,7 +153,7 @@
         -48
       ],
       "id": "74bace14-f374-4807-9636-2068938fd3df",
-      "name": "Inform Tracking Failed",
+      "name": "通知追踪失败",
       "webhookId": "7b0843fe-ee9e-45de-8198-74a6adc41eb2",
       "executeOnce": true,
       "retryOnFail": false,
@@ -197,7 +197,7 @@
         -304
       ],
       "id": "182864c4-00be-415b-8e4a-554e5fd6e0b0",
-      "name": "Has New Posts?"
+      "name": "有新帖子吗?"
     },
     {
       "parameters": {
@@ -209,8 +209,8 @@
         "embeds": {
           "values": [
             {
-              "description": "=### {{ $('Loop Over URLs').item.json.forum_name }}\n- {{ $('Loop Over URLs').item.json.forum_url_path }}",
-              "author": "=⛔ No new posts found",
+              "description": "=### {{ $('循环URL').item.json.forum_name }}\n- {{ $('循环URL').item.json.forum_url_path }}",
+              "author": "=⛔ 未发现新帖子",
               "color": "#3498DB",
               "timestamp": "={{ $now.toISO() }}"
             }
@@ -224,7 +224,7 @@
         -48
       ],
       "id": "9bdd7173-e138-41f4-9821-3619f5a840a6",
-      "name": "Inform No New Posts Found",
+      "name": "通知未发现新帖子",
       "webhookId": "7b0843fe-ee9e-45de-8198-74a6adc41eb2",
       "executeOnce": true,
       "credentials": {
@@ -252,7 +252,7 @@
         -544
       ],
       "id": "722af682-ae01-4768-a2c2-f25df02b97a8",
-      "name": "Schedule Trigger"
+      "name": "定时触发器"
     },
     {
       "parameters": {
@@ -320,7 +320,7 @@
         -304
       ],
       "id": "b5514d01-cd5b-4a2b-a947-b49e7b7a74ce",
-      "name": "Switch Agent Output",
+      "name": "切换智能体输出",
       "onError": "continueErrorOutput"
     },
     {
@@ -334,7 +334,7 @@
         -304
       ],
       "id": "69625e39-4855-4f35-b1c8-c253b74f288d",
-      "name": "Loop Over URLs",
+      "name": "循环URL",
       "executeOnce": false
     },
     {
@@ -349,7 +349,7 @@
         -544
       ],
       "id": "956ed208-036b-44c7-a809-5a7ff3177291",
-      "name": "Split Out Forum Posts"
+      "name": "拆分论坛帖子"
     },
     {
       "parameters": {
@@ -364,7 +364,7 @@
         -544
       ],
       "id": "93cfe3b1-4905-4053-ab14-2c8c56c8a7a8",
-      "name": "Recompose New Posts Array"
+      "name": "重组新帖子数组"
     },
     {
       "parameters": {
@@ -405,11 +405,11 @@
             },
             {
               "fieldId": "forum_name",
-              "fieldValue": "={{ $('Loop Over URLs').item.json.forum_name }}"
+              "fieldValue": "={{ $('循环URL').item.json.forum_name }}"
             },
             {
               "fieldId": "forum_url",
-              "fieldValue": "={{ $('Loop Over URLs').item.json.forum_url_path }}"
+              "fieldValue": "={{ $('循环URL').item.json.forum_url_path }}"
             },
             {
               "fieldId": "post_alert",
@@ -433,7 +433,7 @@
         -48
       ],
       "id": "b301cc8c-5503-47f4-982d-b58f605cf51b",
-      "name": "Add Posts to Supabase",
+      "name": "添加帖子到Supabase",
       "credentials": {
         "supabaseApi": {
           "id": "okGUlQOFiLX3NatJ",
@@ -449,7 +449,7 @@
             {
               "id": "0a60ead9-cd31-4e48-b81c-71b347d84428",
               "name": "forum_name",
-              "value": "DarkForums.st",
+              "value": "DarkForums.io",
               "type": "string"
             },
             {
@@ -461,19 +461,19 @@
             {
               "id": "b8c7e0f0-1936-4e51-82be-b0c577f42734",
               "name": "forum_url",
-              "value": "https://darkforums.st",
+              "value": "https://darkforums.io",
               "type": "string"
             },
             {
               "id": "e084011b-ec05-4f17-bd25-d448a4ea3eb6",
               "name": "forum_url_path[0]",
-              "value": "https://darkforums.st/Forum-Databases",
+              "value": "https://darkforums.io/Forum-Databases",
               "type": "string"
             },
             {
               "id": "86faa3a0-144a-4807-9843-9e0e1f12a3a4",
               "name": "forum_url_path[1]",
-              "value": "https://darkforums.st/Forum-Other-Leaks",
+              "value": "https://darkforums.io/Forum-Other-Leaks",
               "type": "string"
             }
           ]
@@ -487,7 +487,7 @@
         -544
       ],
       "id": "66809d45-b46a-4e22-b843-c6f58a19a338",
-      "name": "DarkForums.st Metadata"
+      "name": "DarkForums.io 元数据"
     },
     {
       "parameters": {
@@ -500,7 +500,7 @@
         192
       ],
       "id": "5ba2e161-c303-462f-8508-03383208167b",
-      "name": "Wait",
+      "name": "等待",
       "webhookId": "34f815ed-1095-4ad1-8a61-18b42ca04db0"
     },
     {
@@ -517,7 +517,7 @@
         -304
       ],
       "id": "ac027284-304c-48d3-84c5-863dab8e77a2",
-      "name": "Split Out Forum Posts Again"
+      "name": "再次拆分论坛帖子"
     },
     {
       "parameters": {
@@ -532,7 +532,7 @@
           "value": {
             "forum_name": "={{ $json.forum_name }}",
             "forum_url_path": "={{ $json.forum_url }}",
-            "forum_icon": "={{ $('Loop Over URLs').item.json.forum_icon }}",
+            "forum_icon": "={{ $('循环URL').item.json.forum_icon }}",
             "post_id": "={{ $json.id }}",
             "post_title": "={{ $json.post_title }}",
             "post_link": "={{ $json.post_link }}",
@@ -693,7 +693,7 @@
         784,
         -48
       ],
-      "name": "Send Posts to Discord Feed",
+      "name": "发送帖子到Discord",
       "id": "0b35f9e1-b415-4868-b377-4f8fede9ca89",
       "alwaysOutputData": true,
       "onError": "continueRegularOutput"
@@ -701,11 +701,11 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=[\n  {\n    \"forum_url\": \"{{ $('Loop Over URLs').item.json.forum_url_path }}\",\n    \"current_timestamp\": \"{{ $now.toISO() }}\"\n  }\n]",
+        "text": "=[\n  {\n    \"forum_url\": \"{{ $('循环URL').item.json.forum_url_path }}\",\n    \"current_timestamp\": \"{{ $now.toISO() }}\"\n  }\n]",
         "hasOutputParser": true,
         "needsFallback": true,
         "options": {
-          "systemMessage": "=You are an AI agent responsible for parsing ARIA snapshot YAML data from a {{ $('Loop Over URLs').item.json.forum_name }} forum page using Playwright MCP tools. Your task is to extract structured information about forum threads and compile them into a JSON response with proper status handling.\n\n## IMPORTANT: OUTPUT STATUS HANDLING\n\nYour response MUST follow these status rules:\n\n### SUCCESS SCENARIO (task_status: \"success\")\n- When you successfully access the forum page and can extract thread data\n- Output format: `{\"task_status\": \"success\", \"forum_posts\": [...]}`\n- Include the forum_posts array even if it's empty (no threads found)\n- NEVER include \"failed_cause\" in success responses\n\n### FAILURE SCENARIOS (task_status: \"failed\")\n- When you cannot complete the task for any reason\n- Output format: `{\"task_status\": \"failed\", \"failed_cause\": \"reason\", \"error_details\": \"optional details\"}`\n- NEVER include \"forum_posts\" in failed responses\n- NEVER generate dummy/fake data\n\n**Failed Cause Options:**\n- `\"login_needed\"`: When the page requires authentication/login\n- `\"bot_captcha\"`: When blocked by anti-bot systems, CAPTCHA, or Cloudflare protection\n- `\"page_unreachable\"`: When page is offline, returns errors, times out, or is inaccessible\n\n---\n\n## EXTRACT REQUIRED DATA (Only for Success Cases)\n\n### Step 1: Navigate and Capture\n\n1. Use Think tool to plan your approach\n2. Use `browser_navigate` to go to the target URL\n3. Take `browser_snapshot` to capture the forum page content\n4. Analyze the response to determine if extraction is possible\n\n### Step 2: Status Determination\n\n**Check for these failure conditions FIRST:**\n- Login required page / authentication needed\n- Anti-bot protection / CAPTCHA / Cloudflare challenge\n- Page errors (404, 500, timeout, etc.)\n- Inaccessible content\n\n**If any failure condition is detected:**\n- Return immediately with appropriate failed status\n- Do NOT attempt to extract data\n- Do NOT generate fake/dummy data\n\n### Step 3: Parse Thread Data (Success Only)\n\n**Instructions for successful page access:**\n\n1. **Locate Thread Entries**:\n   - Look for `row` or `cell` entries within a `table` or `rowgroup` context.\n   - Thread titles typically appear under `link` tags with recognizable patterns like `Thread-...` in the `/url` or in context mentioning \"by\" an author.\n\n2. **Extract Fields for Each Thread**:\n   - **post_title**: The text content of the main `link` for the thread.\n   - **post_link**: The forum base URL concatenated with the `link` url path that contains `Thread-...` and does not include `?action=lastpost`.\n   - **post_author_name**: The text name near `by` or within a `link` where author info is mentioned.\n   - **post_author_link**: The `link` URL that contains `/User-<username>` for the post author.\n   - **post_date**: The original thread creation date/time (usually in format like \"17-11-23, 05:14 PM\"). Convert this to ISO 8601 format using the forum's timezone context.\n   - **last_post_date**: The date/time string found near `Last Post` link or nearby metadata (can be relative like \"2 minutes ago\"). Convert this to ISO 8601 format using the provided current_timestamp as reference.\n   - **last_post_author**: The name appearing as the latest replier in the `Last Post` section.\n   - **last_post_author_link**: The link containing `/User-<username>` for the last replier.\n\n3. **Date Conversion Rules**:\n   - The `current_timestamp` from User Input is crucial for converting relative dates (like \"2 minutes ago\") to ISO 8601 format.\n   - **For post_date**: Convert from forum format (e.g., \"17-11-23, 05:14 PM\") to ISO 8601. Assume the forum's timezone matches the current_timestamp timezone.\n   - **For last_post_date**: \n     - If relative (e.g., \"2 minutes ago\", \"1 hour ago\", \"Less than 1 minute ago\"), calculate backwards from current_timestamp\n     - If absolute date format, convert similar to post_date\n     - Examples (assuming current_timestamp is \"{{ $now.toISO() }}\"):\n       - \"Less than 1 minute ago\" → subtract 30 seconds from {{ $now.toISO() }} = \"{{ $now.minus({seconds: 30}).toISO() }}\"\n       - \"2 minutes ago\" → subtract 2 minutes from {{ $now.toISO() }} = \"{{ $now.minus({minutes: 2}).toISO() }}\"\n       - \"1 hour ago\" → subtract 1 hour from {{ $now.toISO() }} = \"{{ $now.minus({hours: 1}).toISO() }}\"\n       - \"3 days ago\" → subtract 3 days from {{ $now.toISO() }} = \"{{ $now.minus({days: 3}).toISO() }}\"\n       - \"Yesterday at 3:45 PM\" → calculate to previous day at specified time from {{ $now.toISO() }}\n\n4. **Filtering**:\n   - Ignore rows that are just forum headers or pagination controls.\n   - Ensure you skip `Announcement`-type rows unless they follow the same structure.\n\n5. **Output**:\n   - Return a well-formatted JSON with success status and forum_posts array.\n   - Ensure all URLs are absolute by prepending the forum base URL where necessary.\n   - Ensure all dates are in proper ISO 8601 format with timezone information.\n\n### Example Success Output:\n\n```json\n{\n  \"task_status\": \"success\",\n  \"forum_posts\": [\n    {\n      \"post_title\": \"Example Leak\",\n      \"post_link\": \"{{ $('Loop Over URLs').item.json.forum_url_path }}/Thread-Example-Leak\",\n      \"post_author_name\": \"Username\",\n      \"post_author_link\": \"{{ $('Loop Over URLs').item.json.forum_url_path }}/User-Username\",\n      \"post_date\": \"2023-11-17T17:14:00+02:00\",\n      \"last_post_date\": \"2024-01-16T18:59:04.164+02:00\",\n      \"last_post_author\": \"Replier\",\n      \"last_post_author_link\": \"{{ $('Loop Over URLs').item.json.forum_url_path }}/User-Replier\"\n    }\n  ]\n}\n```\n\n### Example Failure Outputs:\n\n```json\n{\n  \"task_status\": \"failed\",\n  \"failed_cause\": \"bot_captcha\",\n  \"error_details\": \"Cloudflare protection detected on page\"\n}\n```\n\n```json\n{\n  \"task_status\": \"failed\",\n  \"failed_cause\": \"login_needed\",\n  \"error_details\": \"Page redirected to login form\"\n}\n```\n\n```json\n{\n  \"task_status\": \"failed\",\n  \"failed_cause\": \"page_unreachable\",\n  \"error_details\": \"HTTP 503 Service Unavailable\"\n}\n```\n\n---\n\n## ANTI-BOT HANDLING\n\n### ONLY if the browser_snapshot shows anti-bot protection:\n\n- Use `browser_wait_for` with time: 10 to wait for automatic bypass\n- Take another `browser_snapshot` to check if forum loaded\n- If still blocked, return failed status with \"bot_captcha\" cause\n\n### ONLY if captcha verification appears:\n\n- Use `browser_hover` then `browser_click` on verification button\n- Use `browser_wait_for` with time: 5\n- Take final `browser_snapshot` for extraction\n- If verification fails, return failed status with \"bot_captcha\" cause\n\n## CRITICAL REMINDERS\n\n1. **NEVER generate fake/dummy data** - if you can't access real data, return failed status\n2. **Always determine status first** - check for failures before attempting extraction\n3. **Follow the JSON schema strictly** - success responses need forum_posts, failed responses need failed_cause\n4. **Be precise with failure causes** - use the correct enum value for the specific situation\n5. **No mixed responses** - never include both forum_posts and failed_cause in the same response\n6. **Date conversion is mandatory** - all dates must be converted to ISO 8601 format using the provided current_timestamp as reference\n7. **Extract both post_date and last_post_date** - both are now required fields for each forum post",
+          "systemMessage": "=你是一个 AI 智能体，负责使用 Playwright MCP 工具从 {{ $('循环URL').item.json.forum_name }} 论坛页面解析 ARIA 快照 YAML 数据。你的任务是提取有关论坛帖子的结构化信息，并将其汇编成具有正确状态处理的 JSON 响应。\n\n## 重要：输出状态处理\n\n你的响应必须遵循以下状态规则：\n\n### 成功场景 (task_status: \"success\")\n- 当你成功访问论坛页面并能提取帖子数据时\n- 输出格式：`{\"task_status\": \"success\", \"forum_posts\": [...]}`\n- 即使是空的（未找到帖子），也要包含 forum_posts 数组\n- 在成功响应中**绝不**包含 \"failed_cause\"\n\n### 失败场景 (task_status: \"failed\")\n- 当你因任何原因无法完成任务时\n- 输出格式：`{\"task_status\": \"failed\", \"failed_cause\": \"reason\", \"error_details\": \"optional details\"}`\n- 在失败响应中**绝不**包含 \"forum_posts\"\n- **绝不**生成虚拟/伪造数据\n\n**失败原因选项：**\n- `\"login_needed\"`: 当页面需要认证/登录时\n- `\"bot_captcha\"`: 当被反爬虫系统、CAPTCHA 或 Cloudflare 保护阻止时\n- `\"page_unreachable\"`: 当页面离线、返回错误、超时或无法访问时\n\n---\n\n## 提取所需数据（仅限成功情况）\n\n### 步骤 1：导航与截图\n\n1. 使用 Think 工具规划你的方法\n2. 使用 `browser_navigate` 访问目标 URL\n3. 使用 `browser_snapshot` 捕获论坛页面内容\n4. 分析响应以确定是否可能提取数据\n\n### 步骤 2：状态判定\n\n**首先检查这些失败条件：**\n- 登录所需的页面 / 需要认证\n- 反爬虫保护 / CAPTCHA / Cloudflare 挑战\n- 页面错误（404, 500, 超时等）\n- 无法访问的内容\n\n**如果有任何失败条件被检测到：**\n- 立即返回带有适当失败状态的结果\n- **不要**尝试提取数据\n- **不要**生成伪造/虚拟数据\n\n### 步骤 3：解析帖子数据（仅限成功）\n\n**成功访问页面的说明：**\n\n1. **定位帖子条目**：\n   - 在 `table` 或 `rowgroup` 上下文中查找 `row` 或 `cell` 条目。\n   - 帖子标题通常出现在标记有明显模式（如 `/url` 中包含 `Thread-...` 或在提及 \"by\" 作者的上下文中）的 `link` 标签下。\n\n2. **提取每个帖子的字段**：\n   - **post_title**：帖子主 `link` 的文本内容。\n   - **post_link**：论坛基础 URL 加上包含 `Thread-...` 且不包含 `?action=lastpost` 的 `link` URL 路径。\n   - **post_author_name**：在 `by` 附近或提到作者信息的 `link` 中的文本名称。\n   - **post_author_link**：包含 `/User-<username>` 的作者 `link` URL。\n   - **post_date**：原始帖子创建日期/时间（通常如 \"17-11-23, 05:14 PM\"）。使用论坛的时区上下文将其转换为 ISO 8601 格式。\n   - **last_post_date**：在 `Last Post` 链接或附近元数据（可能是相对时间如 \"2 minutes ago\"）附近找到的日期/时间。使用提供的 current_timestamp 作为参考进行转换。\n   - **last_post_author**：在 `Last Post` 部分显示为最新回复者的名称。\n   - **last_post_author_link**：最新回复者包含 `/User-<username>` 的链接。\n\n3. **日期转换规则**：\n   - 来自用户输入的 `current_timestamp` 对于将相对日期（如 \"2 minutes ago\"）转换为 ISO 8601 格式至关重要。\n   - **对于 post_date**：从论坛格式（例如 \"17-11-23, 05:14 PM\"）转换为 ISO 8601。假设论坛的时区与 current_timestamp 时区匹配。\n   - **对于 last_post_date**：\n     - 如果是相对的（例如 \"2 minutes ago\", \"1 hour ago\", \"Less than 1 minute ago\"），从 current_timestamp 向后计算\n     - 如果是绝对日期格式，类似于 post_date 进行转换\n     - 示例（假设 current_timestamp 是 \"{{ $now.toISO() }}\"）：\n       - \"Less than 1 minute ago\" → 从 {{ $now.toISO() }} 减去 30 秒 = \"{{ $now.minus({seconds: 30}).toISO() }}\"\n       - \"2 minutes ago\" → 从 {{ $now.toISO() }} 减去 2 分钟 = \"{{ $now.minus({minutes: 2}).toISO() }}\"\n       - \"1 hour ago\" → 从 {{ $now.toISO() }} 减去 1 小时 = \"{{ $now.minus({hours: 1}).toISO() }}\"\n       - \"3 days ago\" → 从 {{ $now.toISO() }} 减去 3 天 = \"{{ $now.minus({days: 3}).toISO() }}\"\n       - \"Yesterday at 3:45 PM\" → 计算到前一天的特定时间\n\n4. **过滤**：\n   - 忽略仅仅是论坛标题或分页控件的行。\n   - 确保跳过 `Announcement` 类型的行，除非它们遵循相同的结构。\n\n5. **输出**：\n   - 返回格式良好的 JSON，包含成功状态和 forum_posts 数组。\n   - 确保所有 URL 都是绝对路径，必要时在前面加上论坛基础 URL。\n   - 确保所有日期均为包含时区信息的正确 ISO 8601 格式。\n\n### 成功输出示例：\n\n```json\n{\n  \"task_status\": \"success\",\n  \"forum_posts\": [\n    {\n      \"post_title\": \"Example Leak\",\n      \"post_link\": \"{{ $('循环URL').item.json.forum_url_path }}/Thread-Example-Leak\",\n      \"post_author_name\": \"Username\",\n      \"post_author_link\": \"{{ $('循环URL').item.json.forum_url_path }}/User-Username\",\n      \"post_date\": \"2023-11-17T17:14:00+02:00\",\n      \"last_post_date\": \"2024-01-16T18:59:04.164+02:00\",\n      \"last_post_author\": \"Replier\",\n      \"last_post_author_link\": \"{{ $('循环URL').item.json.forum_url_path }}/User-Replier\"\n    }\n  ]\n}\n```\n\n### 失败输出示例：\n\n```json\n{\n  \"task_status\": \"failed\",\n  \"failed_cause\": \"bot_captcha\",\n  \"error_details\": \"Cloudflare protection detected on page\"\n}\n```\n\n```json\n{\n  \"task_status\": \"failed\",\n  \"failed_cause\": \"login_needed\",\n  \"error_details\": \"Page redirected to login form\"\n}\n```\n\n```json\n{\n  \"task_status\": \"failed\",\n  \"failed_cause\": \"page_unreachable\",\n  \"error_details\": \"HTTP 503 Service Unavailable\"\n}\n```\n\n---\n\n## 反爬虫 (ANTI-BOT) 处理\n\n### 仅当 browser_snapshot 显示反爬虫保护时：\n\n- 使用 `browser_wait_for` 等待时间：10，以自动绕过\n- 再次拍摄 `browser_snapshot` 检查论坛是否加载\n- 如果仍然被屏蔽，返回带有 \"bot_captcha\" 原因的失败状态\n\n### 仅当出现验证码 (captcha) 时：\n\n- 使用 `browser_hover` 然后 `browser_click` 点击验证按钮\n- 使用 `browser_wait_for` 等待时间：5\n- 拍摄最终 `browser_snapshot` 用于提取\n- 如果验证失败，返回带有 \"bot_captcha\" 原因的失败状态\n\n## 关键提醒\n\n1. **绝不生成伪造/虚拟数据** - 如果无法访问真实数据，返回失败状态\n2. **始终先确定状态** - 在尝试提取之前检查失败情况\n3. **严格遵循 JSON 模式** - 成功响应需要 forum_posts，失败响应需要 failed_cause\n4. **失败原因要精确** - 针对具体情况使用正确的枚举值\n5. **不要混合响应** - 绝不要在同一响应中同时包含 forum_posts 和 failed_cause\n6. **日期转换是强制性的** - 必须使用提供的 current_timestamp 作为参考将所有日期转换为 ISO 8601 格式\n7. **提取 post_date 和 last_post_date** - 这两个现在都是每个论坛帖子的必填字段",
           "passthroughBinaryImages": true
         }
       },
@@ -716,7 +716,7 @@
         -48
       ],
       "id": "9bb9a2ee-ce01-465f-901f-d4dee2099499",
-      "name": "AI Agent",
+      "name": "AI 智能体",
       "retryOnFail": true,
       "maxTries": 2,
       "waitBetweenTries": 5000,
@@ -741,7 +741,7 @@
         208
       ],
       "id": "c0710347-a519-4d07-b406-6e1841bf95db",
-      "name": "Playwright MCP"
+      "name": "Playwright MCP工具"
     },
     {
       "parameters": {
@@ -765,7 +765,7 @@
         -544
       ],
       "id": "d87533a9-3ef7-4596-8f42-070e07ef88b3",
-      "name": "Keywords",
+      "name": "关键词",
       "notesInFlow": true,
       "notes": "This node defines the entity detection dictionary containing grouped arrays of companies and related terms. Each array represents one canonical entity (first element) followed by its variations, abbreviations, and common misspellings. For example, \"facebook\" includes variants like \"face\", \"fbook\", and \"meta\", enabling comprehensive detection of entity mentions regardless of how they're written in forum posts."
     },
@@ -780,7 +780,7 @@
         -304
       ],
       "id": "b0ad90e0-c1f4-45ce-9568-169ed1ed1c21",
-      "name": "Entity Matching Code",
+      "name": "实体匹配代码",
       "notesInFlow": true,
       "notes": "This node performs intelligent entity detection on forum post titles using text normalization and hybrid matching strategies. It processes each post title by removing accents, normalizing whitespace, and applying different matching approaches: exact word boundaries for short terms (≤3 chars), substring matching for multi-word phrases, and combined word boundary + substring matching for single words. The output includes the original post data plus entity_name (array of detected entities or null) and keyword_alert (boolean flag), providing structured threat intelligence data for database storage."
     },
@@ -797,7 +797,7 @@
         -544
       ],
       "id": "4293d486-a32d-40f9-9806-d801437bd8c7",
-      "name": "Split Out URLs to Track"
+      "name": "拆分待追踪URL"
     },
     {
       "parameters": {
@@ -810,7 +810,7 @@
         416
       ],
       "id": "6375f030-7208-47d5-a286-614dfbb04bc5",
-      "name": "Wait to Retry",
+      "name": "等待重试",
       "webhookId": "aa69297c-b4b6-401a-95d9-a1b00e81e5b3"
     },
     {
@@ -823,8 +823,8 @@
         "embeds": {
           "values": [
             {
-              "description": "=### {{ $('Loop Over URLs').item.json.forum_name }}\n- {{ $('Loop Over URLs').item.json.forum_url_path }}\n> The AI agent tried to get the data **3 times** but couldn't do it.\n`Check workflow logs • Manual review required`",
-              "author": "=⚠️ Forum tracking retries failed",
+              "description": "=### {{ $('循环URL').item.json.forum_name }}\n- {{ $('循环URL').item.json.forum_url_path }}\n> AI 智能体尝试获取数据 **3次** 但未能成功。\n`查看工作流日志 • 需要人工审查`",
+              "author": "=⚠️ 论坛追踪重试失败",
               "color": "#E74C3C",
               "timestamp": "={{ $now.toISO() }}"
             }
@@ -838,7 +838,7 @@
         192
       ],
       "id": "c14ea7f5-7ebc-4b1c-a024-9f0adad68714",
-      "name": "Inform Retry Failed",
+      "name": "通知重试失败",
       "webhookId": "7b0843fe-ee9e-45de-8198-74a6adc41eb2",
       "executeOnce": true,
       "retryOnFail": false,
@@ -880,7 +880,7 @@
         192
       ],
       "id": "b48f6536-8945-409c-8ed7-7f19837aab94",
-      "name": "Retry Count (2 retries)"
+      "name": "重试计数 (2次)"
     },
     {
       "parameters": {
@@ -894,7 +894,7 @@
         -32
       ],
       "id": "68759977-5219-4ed2-8f0d-d6f8b4633e51",
-      "name": "Google Gemini 2.0 Flash",
+      "name": "Google Gemini 2.0 Flash模型",
       "credentials": {
         "googlePalmApi": {
           "id": "s0TtVLCRa3k8hm0V",
@@ -916,7 +916,7 @@
         208
       ],
       "id": "712c5b3b-432c-4deb-9aaf-cbfa7d90323d",
-      "name": "Gemini 2.5 Flash Lite",
+      "name": "Gemini 2.5 Flash Lite模型",
       "credentials": {
         "googlePalmApi": {
           "id": "s0TtVLCRa3k8hm0V",
@@ -934,8 +934,8 @@
         "embeds": {
           "values": [
             {
-              "description": "=### {{ $('Loop Over URLs').item.json.forum_name }}\n- {{ $('Loop Over URLs').item.json.forum_url_path }}\n`Attempt ({{ $runIndex+1 }})`",
-              "author": "=🔄 New forum tracking started",
+              "description": "=### {{ $('循环URL').item.json.forum_name }}\n- {{ $('循环URL').item.json.forum_url_path }}\n`尝试第 ({{ $runIndex+1 }}) 次`",
+              "author": "=🔄 新的论坛追踪已启动",
               "color": "#3498DB",
               "timestamp": "={{ $now.toISO() }}"
             }
@@ -949,7 +949,7 @@
         416
       ],
       "id": "423b713f-27d5-4afb-b4f4-d542ea104a3e",
-      "name": "Inform New Retry Started",
+      "name": "通知开始新重试",
       "webhookId": "7b0843fe-ee9e-45de-8198-74a6adc41eb2",
       "credentials": {
         "discordWebhookApi": {
@@ -961,379 +961,379 @@
   ],
   "pinData": {},
   "connections": {
-    "Structured Output Parser": {
+    "结构化输出解析器": {
       "ai_outputParser": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_outputParser",
             "index": 0
           }
         ]
       ]
     },
-    "Think": {
+    "思考(Think)工具": {
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_tool",
             "index": 0
           }
         ]
       ]
     },
-    "Supabase RPC Check Existing URLs": {
+    "Supabase RPC 检查现有URL": {
       "main": [
         [
           {
-            "node": "Merge Only New URLs",
+            "node": "合并仅新URL",
             "type": "main",
             "index": 1
           }
         ],
         [
           {
-            "node": "Inform Tracking Failed",
+            "node": "通知追踪失败",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Merge Only New URLs": {
+    "合并仅新URL": {
       "main": [
         [
           {
-            "node": "Recompose New Posts Array",
+            "node": "重组新帖子数组",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Inform Tracking Started": {
+    "通知开始追踪": {
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Inform Tracking Failed": {
+    "通知追踪失败": {
       "main": [
         [
           {
-            "node": "Retry Count (2 retries)",
+            "node": "重试计数 (2次)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Has New Posts?": {
+    "有新帖子吗?": {
       "main": [
         [
           {
-            "node": "Split Out Forum Posts Again",
+            "node": "再次拆分论坛帖子",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Inform No New Posts Found",
+            "node": "通知未发现新帖子",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Inform No New Posts Found": {
+    "通知未发现新帖子": {
       "main": [
         [
           {
-            "node": "Wait",
+            "node": "等待",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Schedule Trigger": {
+    "定时触发器": {
       "main": [
         [
           {
-            "node": "DarkForums.st Metadata",
+            "node": "DarkForums.io 元数据",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Switch Agent Output": {
+    "切换智能体输出": {
       "main": [
         [
           {
-            "node": "Supabase RPC Check Existing URLs",
+            "node": "Supabase RPC 检查现有URL",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Split Out Forum Posts",
+            "node": "拆分论坛帖子",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Inform Tracking Failed",
+            "node": "通知追踪失败",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Inform Tracking Failed",
+            "node": "通知追踪失败",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Loop Over URLs": {
+    "循环URL": {
       "main": [
         [],
         [
           {
-            "node": "Inform Tracking Started",
+            "node": "通知开始追踪",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Split Out Forum Posts": {
+    "拆分论坛帖子": {
       "main": [
         [
           {
-            "node": "Merge Only New URLs",
+            "node": "合并仅新URL",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Recompose New Posts Array": {
+    "重组新帖子数组": {
       "main": [
         [
           {
-            "node": "Has New Posts?",
+            "node": "有新帖子吗?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Add Posts to Supabase": {
+    "添加帖子到Supabase": {
       "main": [
         [
           {
-            "node": "Send Posts to Discord Feed",
+            "node": "发送帖子到Discord",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait",
+            "node": "等待",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "DarkForums.st Metadata": {
+    "DarkForums.io 元数据": {
       "main": [
         [
           {
-            "node": "Split Out URLs to Track",
+            "node": "拆分待追踪URL",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait": {
+    "等待": {
       "main": [
         [
           {
-            "node": "Loop Over URLs",
+            "node": "循环URL",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Split Out Forum Posts Again": {
+    "再次拆分论坛帖子": {
       "main": [
         [
           {
-            "node": "Keywords",
+            "node": "关键词",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Send Posts to Discord Feed": {
+    "发送帖子到Discord": {
       "main": [
         [
           {
-            "node": "Wait",
+            "node": "等待",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "AI Agent": {
+    "AI 智能体": {
       "main": [
         [
           {
-            "node": "Switch Agent Output",
+            "node": "切换智能体输出",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Inform Tracking Failed",
+            "node": "通知追踪失败",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Playwright MCP": {
+    "Playwright MCP工具": {
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_tool",
             "index": 0
           }
         ]
       ]
     },
-    "Keywords": {
+    "关键词": {
       "main": [
         [
           {
-            "node": "Entity Matching Code",
+            "node": "实体匹配代码",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Entity Matching Code": {
+    "实体匹配代码": {
       "main": [
         [
           {
-            "node": "Add Posts to Supabase",
+            "node": "添加帖子到Supabase",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Split Out URLs to Track": {
+    "拆分待追踪URL": {
       "main": [
         [
           {
-            "node": "Loop Over URLs",
+            "node": "循环URL",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait to Retry": {
+    "等待重试": {
       "main": [
         [
           {
-            "node": "Inform New Retry Started",
+            "node": "通知开始新重试",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Inform Retry Failed": {
+    "通知重试失败": {
       "main": [
         [
           {
-            "node": "Wait",
+            "node": "等待",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Retry Count (2 retries)": {
+    "重试计数 (2次)": {
       "main": [
         [
           {
-            "node": "Inform Retry Failed",
+            "node": "通知重试失败",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Wait to Retry",
+            "node": "等待重试",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Google Gemini 2.0 Flash": {
+    "Google Gemini 2.0 Flash模型": {
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_languageModel",
             "index": 1
           }
         ]
       ]
     },
-    "Gemini 2.5 Flash Lite": {
+    "Gemini 2.5 Flash Lite模型": {
       "ai_languageModel": [
         [
           {
-            "node": "Structured Output Parser",
+            "node": "结构化输出解析器",
             "type": "ai_languageModel",
             "index": 0
           },
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "Inform New Retry Started": {
+    "通知开始新重试": {
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "main",
             "index": 0
           }

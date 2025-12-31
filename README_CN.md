@@ -1,192 +1,140 @@
-# 🕵️ DarkWeb Forums Tracker
+# 🕵️ DarkWeb Forums Tracker (暗网论坛追踪器)
 
-> **我构建的一个自动监控暗网论坛并将威胁情报警报发送到Discord的工具**
+> **全自动化的暗网论坛监控与威胁情报推送工具**
 
-厌倦了手动检查暗网论坛获取威胁情报？我创建了这个自动化系统，它使用AI代理抓取论坛帖子，检测关键词警报，并直接将专业威胁情报发送到你的Discord。这是我的个人作品集项目，但我希望它能帮助其他网络安全人员在不需要手动工作的情况下了解地下活动。
+厌倦了手动刷新暗网论坛来搜集威胁情报？我开发了这个自动化系统，利用 **Google Gemini** 驱动的 AI 智能体，模仿人类行为浏览论坛，抓取帖子，自动检测关键威胁，并将研判后的高价值情报（含截图和摘要）直接推送到你的 Discord 频道。
+
+这是一个致力于将繁琐的“人肉”监控转化为**智能化、自动化**流程的开源项目，旨在帮助网络安全人员从重复劳动中解脱出来，全天候掌握地下威胁动态。
 
 <div align="center">
 
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)](https://docker.com) [![AI](https://img.shields.io/badge/Google_Gemini-AI-FF6B35?logo=googlegemini)](https://ai.google.dev) [![n8n](https://img.shields.io/badge/n8n-Automation-FF6D5A?logo=n8n)](https://n8n.io) [![Playwright MCP](https://custom-icon-badges.demolab.com/badge/Playwright_MCP-Browser_Automation-2EAD33?logo=playwright&logoColor=fff)](https://github.com/microsoft/playwright-mcp) [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?logo=supabase)](https://supabase.com) [![Discord](https://img.shields.io/badge/Discord-Integration-5865F2?logo=discord)](https://discord.com)
 
-<img src="images/forum_posts_discord.png" alt="DarkWeb Forums Discord Feed" width="350">
+<img src="images/forum_posts_discord.png" alt="Discord 威胁情报推送预览" width="350">
 
 </div>
 
-## 🎯 我解决的问题
+## 🎯 痛点与解决方案
 
-在花费了太多时间手动监控暗网论坛获取威胁情报后，我意识到我们都面临着同样的挫折：
+作为安全研究人员，手动监控暗网论坛往往面临诸多痛点：
+- **⏰ 效率低下**：每天花费大量时间在多个论坛间切换检查。
+- **🌙 遗漏风险**：睡觉或开会时容易错过稍纵即逝的关键情报。
+- **📊 信息噪音**：海量灌水内容让人难以筛选出真正的高危数据泄露。
+- **🛡️ 反爬对抗**：传统爬虫容易被论坛的验证码和反机器人机制拦截。
 
-- **⏰ 手动监控耗时太长** - 每天检查多个论坛会占用你的时间
-- **🌙 容易错过重要内容** - 关键帖子会在你睡觉或忙碌时出现
-- **📊 信息过载** - 数百个帖子，没有好的方法来优先处理重要内容
-- **🔄 每天重复同样的例行工作** - 一遍又一遍地手动检查同一个论坛
-- **📱 难以与团队分享** - 截图和复制粘贴无法扩展
-- **🛡️ 隐身需求** - 论坛会检测并阻止自动化爬虫
+**DarkWeb Forums Tracker** 为此而生：
 
-## 💡 我构建的解决方案
+- ✨ **AI 智能拟人**：由 Google Gemini 驱动的 AI 智能体，模拟人类浏览行为，降低被封风险。
+- 🤖 **全自动工作流**：基于 n8n 编排，实现从抓取、分析到推送的全链路自动化。
+- 📱 **实时情报推送**：发现关键词命中（如 "Database", "Leak"）时，立即发送包含截图和 AI 摘要的 Discord 警报。
+- 🖥️ **人机协同 (VNC)**：遇到高难度验证码或首次登录时，可通过 VNC 界面远程介入，AI 随后自动接管。
+- 🐳 **一键部署**：基于 Docker，只需一条指令即可启动整套监控系统。
+- � **持续监控**：默认每 4 小时巡检一次，全天候不间断运行。
 
-所以我构建了这个**DarkWeb Forums Tracker**来自动化繁琐的监控例行工作：
+## 👥 适用人群
 
-✨ **AI进行监控** - 由Google Gemini提供支持的代理以类似人类的行为抓取论坛  
-🤖 **工作流处理一切** - n8n自动编排整个论坛监控流程  
-📱 **Discord传递警报** - 实时通知，带有关键词匹配的截图  
-🖥️ **人工干预** - VNC界面允许手动干预解决CAPTCHA和登录挑战  
-🐳 **易于设置** - 只需运行 `docker compose up -d` 即可开始监控论坛  
-🕐 **每4小时一次** - 一劳永逸的自动化，全天候运行  
-
-## 👥 谁可能会发现这有用
-
-如果你正在处理威胁情报监控，这可能会有所帮助：
-
-- **🛡️ SOC团队** - 新兴威胁的早期预警系统
-- **🕵️ 威胁猎手** - 监控威胁行为者通信和TTP
-- **📡 威胁情报分析师** - 自动化暗网数据收集
-- **👁️ 安全经理** - 地下活动的执行摘要  
-- **🔒 安全顾问** - 为客户提供威胁情报服务
-- **🏢 MSP团队** - 监控针对客户行业的威胁
+- **🛡️ SOC 团队**：作为外部威胁情报的早期预警源。
+- **🕵️ 威胁猎手**：追踪黑客组织的最新动向、TTPs 和沟通渠道。
+- **📡 情报分析师**：自动化收集地下数据，建立威胁数据库。
+- **🔒 安全顾问/MSP**：为客户提供定制化的品牌保护和数据泄露监控服务。
 
 ## 🚀 快速开始
 
-**前提条件**：Docker、Supabase Cloud账户、Discord webhook、Google Gemini API密钥
+**前提条件**：已安装 Docker，且拥有 Supabase Cloud 账户、Discord Webhook 地址及 Google Gemini API 密钥。
 
 ```bash
-# 克隆并设置
+# 1. 克隆仓库
 git clone https://github.com/brunosergi/darkweb-forums-tracker.git
 cd darkweb-forums-tracker
+
+# 2. 配置环境
 cp .env.example .env
+# 编辑 .env 文件，填入你的 Supabase 和 API 密钥等信息
 
-# 使用Supabase和API凭证配置你的.env
-# 启动平台
+# 3. 启动系统
 docker compose up -d
+# 系统会自动构建中文优化的 N8N 镜像并启动所有服务
 
-# 在 http://localhost:5678 配置N8N凭证
-# 激活两个工作流并开始监控！
+# 4. 初始化
+# 访问 http://localhost:5678 配置 N8N 凭证
+# 激活预置的两个工作流，监控即刻开始！
 ```
 
-> **📖 完整设置指南**：请参阅 [SETUP_CN.md](SETUP_CN.md) 获取详细的分步配置
+> **📖 详细指南**：请参阅 [SETUP_CN.md](SETUP_CN.md) 获取保姆级配置教程。
 
-**服务**：N8N (5678) • VNC (6080) • 每4小时发送一次Discord警报
+**服务端口**：
+- **N8N 管理面板**：`http://localhost:5678`
+- **VNC 浏览器视图**：`http://localhost:6080`
 
-## 🛠️ 技术栈
+## 🛠️ 核心架构
 
-### 核心工具
-- **[n8n](https://n8n.io)** - 连接一切的可视化工作流
-- **[Playwright MCP](https://github.com/microsoft/playwright-mcp)** - 具有隐身功能的AI驱动浏览器自动化
-- **[Google Gemini](https://ai.google.dev)** - 读取和分析论坛内容的LLM
-- **[Supabase](https://supabase.com)** - 带有文件存储的云PostgreSQL数据库
-- **[Discord Webhooks](https://discord.com)** - 你的团队获取实时警报的地方
-- **[Docker](https://docker.com)** - 所有内容都在容器中运行
+- **[n8n](https://n8n.io)**：自动化的大脑，负责调度和逻辑处理。
+- **[Playwright MCP](https://github.com/microsoft/playwright-mcp)**：AI 驱动的浏览器，支持持久化会话和抗指纹检测。
+- **[Google Gemini](https://ai.google.dev)**：智能分析核心，负责理解帖子内容并生成摘要。
+- **[Supabase](https://supabase.com)**：云端 PostgreSQL + 对象存储，用于持久化数据和截图。
+- **[Discord](https://discord.com)**：情报接收终端，支持富文本嵌入消息。
 
-### 论坛来源
+## 📋 工作流程
 
-## 📋 工作原理
+1. **🕵🏿 目标监控**：默认追踪 **DarkForums.io**（原 DarkForums.st），专注于数据库泄露板块。
+2. **🕐 周期运行**：系统唤醒（默认每4小时）。
+3. **🤖 智能解析**：AI 控制浏览器访问论坛，智能识别并提取帖子列表。
+4. **🔍 去重过滤**：通过数据库比对，自动过滤已处理的历史帖子。
+5. **🎯 关键词匹配**：根据设定的关键词（如企业名、泄露类型）进行精准筛选。
+6. **� 证据留存**：对命中警报的帖子自动全屏截图。
+7. **🧠 AI 研判**：Gemini 模型分析帖子内容，生成中文简报。
+8. **📱 警报触达**：Discord 收到包含截图、摘要、链接和风险等级的警报。
+9. **� 智能重试**：内置指数退避重试机制，应对网络波动或临时封锁。
 
-1. **🕵🏿 DarkForums.st** - 跟踪数据库泄露和漏洞讨论
-2. **🕐 定时监控** - 系统每4小时检查一次配置的论坛
-3. **🤖 AI代理解析** - Playwright MCP通过浏览器自动化提取论坛帖子和时间戳
-4. **🔍 智能去重** - 只处理新帖子（数据库中没有重复内容）
-5. **🎯 实体检测** - 高级关键词匹配，带有规范名称、变体和文本标准化
-6. **🔄 重试逻辑** - 2次尝试重试系统，带有智能退避机制，用于处理失败的操作
-7. **📸 截图和分析** - 对于警报：捕获截图并生成AI摘要
-8. **📱 Discord传递** - 全面的日志记录，带有彩色编码的警报和详细的状态更新
-9. **💾 数据库存储** - 增强的架构，带有timestampz格式和实体跟踪
+## 🖥️ VNC 人机交互界面
 
-## 🖥️ 人工干预VNC界面
+自动化不是万能的，特别是在面对复杂的反爬措施时。本项目集成了 VNC 远程桌面功能：
 
-### **常见场景**
-- **CAPTCHA解决**：AI在DDoS-Guard或论坛CAPTCHA上卡住
-- **手动登录**：首次登录受保护的论坛
-- **机器人检测**：绕过需要人工交互的反机器人措施
-- **会话恢复**：当登录会话过期时重新认证
+### **应用场景**
+- **手动过盾**：还是过不去 Cloudflare 或 DDoS-Guard？进去点一下就行。
+- **首次登录**：需要输入账号密码或二次验证？手动登一次，Cookie 会自动保存。
+- **调试排错**：直观看到 AI 到底卡在哪里了。
 
-### **工作原理**
-1. **AI代理运行**：Playwright MCP浏览器自动化正在进行中
-2. **检测到挑战**：代理遇到CAPTCHA或登录要求
-3. **手动干预**：连接到VNC并解决挑战
-4. **AI继续**：代理在手动帮助后恢复自动抓取
-
-VNC界面运行完整的Chrome浏览器，你可以看到AI代理看到的内容，并与任何需要人工输入的元素进行交互。
+### **使用方法**
+访问 **http://localhost:6080**，你将看到一个完整的 Chrome 浏览器界面。你可以直接操作这个浏览器，就像操作本地电脑一样。AI 智能体和你是共用这个浏览器的，它会接着你的操作继续执行。
 
 <div align="center">
-
-<img src="images/vnc_browser_interaction.png" alt="VNC Browser Interface - AI Agent Forum Access" width="500">
-
+<img src="images/vnc_browser_interaction.png" alt="VNC 浏览器界面" width="500">
 </div>
 
-<div align="center">
+## 💡 功能亮点 (V1 版本)
 
-<img src="images/vnc_manual_captcha.png" alt="VNC Manual Captcha Solving" width="350" style="margin-right: 10px;">
-<img src="images/vnc_manual_login.png" alt="VNC Manual Login" width="350">
+- ✅ **本地化优化**：N8N 界面及工作流节点已全面汉化，更符合中文用户习惯。
+- ✅ **智能重试**：包含 2 次智能重试机制，大幅提高监控稳定性。
+- ✅ **实体识别**：支持配置实体别名库（如将 "fb", "meta" 统一识别为 Facebook）。
+- ✅ **数据留存**：所有抓取记录和截图均持久化存储，便于后续回溯分析。
+- ✅ **会话保持**：浏览器用户数据持久化挂载，登录态永不丢失（除非 Cookie 过期）。
+- ✅ **分级推送**：普通更新静默记录，高危情报高亮警报。
 
-</div>
+## 🗺️ 未来规划
 
-### **快速手动访问**
+### 🏢 **覆盖范围扩展**
+- 增加对 BreachForums, LockBit 博客, XSS.is 等高价值目标的监控支持。
+- 优化长页面截图体验。
 
-当你需要手动控制浏览器进行故障排除、认证或CAPTCHA解决时：
+### 🤖 **对抗能力升级**
+- **AI 自动过验证**：集成图像识别 AI，自动解决滑块和文字点选验证码。
+- **代理池支持**：集成商业代理，支持 IP 轮换以规避封锁。
+- **自动登录**：支持在 `.env` 中配置凭证，由 AI 自动完成登录过程。
 
-**VNC Web界面**：访问 http://localhost:6080
-- 按下 **Alt+F2** 并输入：`chromium`
-- 或右键点击桌面 → 应用程序 → 运行终端并输入：`chromium &`
-
-**容器终端**：
-```bash
-docker exec -it darkweb-forums-tracker-playwright bash
-chromium &
-```
-
-非常适合解决CAPTCHA、设置认证cookie、调试失败的抓取或手动导航AI代理无法自动处理的复杂登录流程。
-
-## 💡 V1 MVP功能
-
-✅ **定时触发器** - 每4小时开始一次  
-✅ **Discord通知** - 发送扫描开始信息（如果出现问题，有助于引起人工注意）  
-✅ **论坛URL循环** - 给定论坛URL进行迭代  
-✅ **AI代理扫描** - 扫描循环中的当前URL目标  
-✅ **错误处理** - 如果循环成功 → 继续工作流，如果循环失败 → 失败分支（bot_captcha, login_needed等）  
-✅ **去重** - 删除重复帖子  
-✅ **关键词分支分离** - 以数组格式将关键词添加到"Keywords"节点（用户可自定义）  
-✅ **警报工作流** - 如果包含任何关键词 → 警报分支（截图+AI摘要），如果没有关键词 → 正常分支  
-✅ **人工干预VNC** - 基于Web的浏览器GUI，用于手动解决CAPTCHA和登录协助  
-✅ **共享浏览器会话** - VNC和Playwright MCP使用相同的Chromium可执行文件，带有共享用户数据目录，用于持久化登录会话  
-✅ **AI代理重试逻辑** - 2次尝试重试系统，带有智能退避机制和Discord通知  
-✅ **增强的实体检测** - 智能关键词匹配，带有规范名称、变体和文本标准化  
-✅ **时间戳格式标准化** - 所有日期以timestampz格式存储，用于正确的时间分析  
-✅ **高级Discord日志记录** - 全面的状态跟踪，带有彩色编码的警报和详细的错误报告  
-✅ **数据库存储** - 保存所有内容，用于历史分析和跟踪
-✅ **Discord结果** - 使用基于实体的检测，将正常帖子和警报帖子区分开来发送到Discord  
-
-## 🗺️ 我接下来的计划
-
-### 🏢 **论坛和数据改进**
-- **多论坛支持** - 跟踪漏洞论坛、lockbit、xss.is等
-- **截图前向下滚动一点** - 获得更好的视图
-- **模块化工作流** - 将工作流分解为多个工作流，以分离关注点
-
-### 🤖 **认证和反机器人**
-- **解决验证码和登录子工作流工具** - 调用AI代理自动处理
-- **Discord通知** - 当出现验证码/论坛阻塞时，请求人工干预
-- **商业/住宅代理** - 支持解决反机器人问题（IP轮换、验证码解决器）
-- **AI代理自动登录** - 在.env中提供论坛凭证，供AI代理使用
-
-
-### ⚡ **技术增强**
-- **AI代理N8N模型选择器** - 定义使用哪个LLM和AI代理回退方案
-- **第二个AI代理重试逻辑** - 将相同的2次尝试重试系统应用于警报帖子分析工作流
-- **pg_vector** - 向量化Supabase数据，并将论坛帖子转换为用于AI聊天的RAG
-- **更好的定时触发器** - 为每个论坛URL路径配置分钟/小时
-- **Tor代理** - 访问.onion论坛
-- **更多通知应用** - Slack、Telegram等
-
-这些功能将把它从一个简单的论坛监控器转变为一个全面的暗网威胁情报平台。目标是让它足够可靠，以至于安全团队实际上依赖它进行地下威胁检测。
+### ⚡ **技术栈演进**
+- **RAG 增强**：利用 Supabase pgvector 向量化存储帖子内容，构建暗网情报知识库。
+- **多模型支持**：允许切换 OpenAI, Anthropic 等其他 LLM 提供商。
+- **Tor 支持**：增加 Tor 网关，支持 .onion 暗网地址访问。
 
 ---
 
 <div align="center">
 
-**⭐ 如果你觉得有用，请给这个仓库加星！**
+**⭐ 如果这个项目对你的安全工作有帮助，请点个 Star 支持一下！**
 
-[📖 设置指南](SETUP_CN.md) • [⚙️ 工作流](n8n/workflows)
+[📖 部署教程](SETUP_CN.md) • [⚙️ 工作流文件](n8n/workflows)
 
-只是一个为网络安全社区构建工具的人 🛡️
+*致敬每一位在网络安全前线奋斗的守望者 🛡️*
 
 </div>

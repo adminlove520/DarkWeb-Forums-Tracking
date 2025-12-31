@@ -5,15 +5,15 @@
       "parameters": {
         "authentication": "webhook",
         "options": {
-          "avatar_url": "={{ $('Forums Post to Discord').item.json.forum_icon }}",
-          "username": "={{ $('Forums Post to Discord').item.json.forum_name }}",
+          "avatar_url": "={{ $('论坛帖子发到Discord').item.json.forum_icon }}",
+          "username": "={{ $('论坛帖子发到Discord').item.json.forum_name }}",
           "wait": true
         },
         "embeds": {
           "values": [
             {
-              "description": "=`👤 Posted by` **[{{ $json.post_author_name }}]({{ $json.post_author_link }})**\n`🕜 Posted at` **{{ $json.post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n`🗣️ Last Post Author` **[{{ $json.last_post_author }}]({{ $json.last_post_author_link }})**\n`🕜 Last Post was at` **{{ $json.last_post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**",
-              "author": "={{ $('Forums Post to Discord').item.json.forum_name }}",
+              "description": "=`👤 发布人` **[{{ $json.post_author_name }}]({{ $json.post_author_link }})**\n`🕜 发布时间` **{{ $json.post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n`🗣️ 最后回复` **[{{ $json.last_post_author }}]({{ $json.last_post_author_link }})**\n`🕜 最后回复时间` **{{ $json.last_post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**",
+              "author": "={{ $('论坛帖子发到Discord').item.json.forum_name }}",
               "timestamp": "=",
               "title": "={{ $json.post_title }}",
               "url": "={{ $json.post_link }}"
@@ -28,7 +28,7 @@
         240
       ],
       "id": "8ecf22a7-0d36-48e2-a491-229d9e131dda",
-      "name": "Send Normal Posts",
+      "name": "发送普通帖子",
       "webhookId": "32783bbd-8818-4f94-8521-f0fb0b949c82",
       "credentials": {
         "discordWebhookApi": {
@@ -42,15 +42,15 @@
       "parameters": {
         "authentication": "webhook",
         "options": {
-          "avatar_url": "={{ $('Forums Post to Discord').item.json.forum_icon }}",
-          "username": "={{ $('Forums Post to Discord').item.json.forum_name }}",
+          "avatar_url": "={{ $('论坛帖子发到Discord').item.json.forum_icon }}",
+          "username": "={{ $('论坛帖子发到Discord').item.json.forum_name }}",
           "wait": true
         },
         "embeds": {
           "values": [
             {
-              "description": "=`👤 Posted by` **[{{ $json.post_author_name }}]({{ $json.post_author_link }})**\n`🕜 Posted at` **{{ $json.post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n`🗣️ Last Post Author` **[{{ $json.last_post_author }}]({{ $json.last_post_author_link }})**\n`🕜 Last Post was at` **{{ $json.last_post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n> {{ $json.post_summary }}\n`{{ $json.entity_name }}`",
-              "author": "={{ $('Forums Post to Discord').item.json.forum_name }}🚨",
+              "description": "=`👤 发布人` **[{{ $json.post_author_name }}]({{ $json.post_author_link }})**\n`🕜 发布时间` **{{ $json.post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n`🗣️ 最后回复` **[{{ $json.last_post_author }}]({{ $json.last_post_author_link }})**\n`🕜 最后回复时间` **{{ $json.last_post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n> {{ $json.post_summary }}\n`{{ $json.entity_name }}`",
+              "author": "={{ $('论坛帖子发到Discord').item.json.forum_name }}🚨",
               "color": "#FF0000",
               "timestamp": "=",
               "title": "={{ $json.post_title }}",
@@ -67,7 +67,7 @@
         480
       ],
       "id": "1a7ae2e1-2b36-4f83-a9cc-fef7b35110a7",
-      "name": "Send Alert Posts",
+      "name": "发送警报帖子",
       "webhookId": "32783bbd-8818-4f94-8521-f0fb0b949c82",
       "credentials": {
         "discordWebhookApi": {
@@ -86,7 +86,7 @@
         240
       ],
       "id": "16288935-4356-48fa-a5a7-43e6fe9dee68",
-      "name": "Merge Posts"
+      "name": "合并帖子"
     },
     {
       "parameters": {
@@ -154,7 +154,7 @@
         480
       ],
       "id": "b96320a4-5f6b-4aa1-b5c6-b96f5d9e11ca",
-      "name": "Switch Post Type"
+      "name": "切换帖子类型"
     },
     {
       "parameters": {
@@ -165,7 +165,7 @@
             {
               "keyName": "id",
               "condition": "eq",
-              "keyValue": "={{ $('Switch Post Type').item.json.post_id }}"
+              "keyValue": "={{ $('切换帖子类型').item.json.post_id }}"
             }
           ]
         },
@@ -189,7 +189,7 @@
         240
       ],
       "id": "378ebdb0-7497-4022-bb9f-3456a3db98f1",
-      "name": "Update Sent Status",
+      "name": "更新发送状态",
       "alwaysOutputData": false,
       "credentials": {
         "supabaseApi": {
@@ -210,7 +210,7 @@
         736
       ],
       "id": "9203ef18-c519-4e9b-9404-cbb7eb7c274f",
-      "name": "Loop Over Alert Post URLs"
+      "name": "循环警报帖子URL"
     },
     {
       "parameters": {
@@ -223,7 +223,7 @@
         736
       ],
       "id": "d43c6cc4-3881-4eee-b38f-dd77d2b07fbe",
-      "name": "Rate Limit",
+      "name": "速率限制",
       "webhookId": "3ecf9259-8e83-44dd-b394-8e91c6f007c1"
     },
     {
@@ -235,7 +235,7 @@
             {
               "keyName": "id",
               "condition": "eq",
-              "keyValue": "={{ $('Loop Over Alert Post URLs').item.json.post_id }}"
+              "keyValue": "={{ $('循环警报帖子URL').item.json.post_id }}"
             }
           ]
         },
@@ -243,15 +243,15 @@
           "fieldValues": [
             {
               "fieldId": "post_summary",
-              "fieldValue": "={{ $('Switch Alert Agent Output').item.json.output.post_analysis.post_summary }}"
+              "fieldValue": "={{ $('切换警报智能体输出').item.json.output.post_analysis.post_summary }}"
             },
             {
               "fieldId": "post_screenshot_url",
-              "fieldValue": "={{ $env.SUPABASE_URL }}/storage/v1/object/screenshots/forum_posts/{{ $('Loop Over Alert Post URLs').item.json.screenshot_filename }}"
+              "fieldValue": "={{ $env.SUPABASE_URL }}/storage/v1/object/screenshots/forum_posts/{{ $('循环警报帖子URL').item.json.screenshot_filename }}"
             },
             {
               "fieldId": "post_visibility",
-              "fieldValue": "={{ $('Switch Alert Agent Output').item.json.output.post_analysis.post_visibility }}"
+              "fieldValue": "={{ $('切换警报智能体输出').item.json.output.post_analysis.post_visibility }}"
             }
           ]
         }
@@ -263,7 +263,7 @@
         736
       ],
       "id": "37a9f621-8d63-4842-b4ba-dfdac8d57f45",
-      "name": "Update Alert Post",
+      "name": "更新警报帖子",
       "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
@@ -339,7 +339,7 @@
         736
       ],
       "id": "19574fbd-c822-4f12-b928-05f7a4dc4778",
-      "name": "Switch Alert Agent Output",
+      "name": "切换警报智能体输出",
       "onError": "continueErrorOutput"
     },
     {
@@ -351,7 +351,7 @@
             {
               "keyName": "id",
               "condition": "eq",
-              "keyValue": "={{ $('Loop Over Alert Post URLs').item.json.post_id }}"
+              "keyValue": "={{ $('循环警报帖子URL').item.json.post_id }}"
             }
           ]
         },
@@ -359,7 +359,7 @@
           "fieldValues": [
             {
               "fieldId": "post_summary",
-              "fieldValue": "=AI agent tried to obtain data, but an error occurred. {{ $json.error }}"
+              "fieldValue": "=AI 智能体尝试获取数据，但发生了错误。 {{ $json.error }}"
             }
           ]
         }
@@ -371,7 +371,7 @@
         1008
       ],
       "id": "d673a811-37ae-48a4-a230-7558c0f10087",
-      "name": "Update as Alert Post Error",
+      "name": "更新为警报帖子错误",
       "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
@@ -384,7 +384,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $env.SUPABASE_URL }}/storage/v1/object/screenshots/forum_posts/{{ $('Loop Over Alert Post URLs').item.json.screenshot_filename }}",
+        "url": "={{ $env.SUPABASE_URL }}/storage/v1/object/screenshots/forum_posts/{{ $('循环警报帖子URL').item.json.screenshot_filename }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "supabaseApi",
         "sendHeaders": true,
@@ -412,7 +412,7 @@
         736
       ],
       "id": "ddff53fc-6b6c-49ff-a4b7-86762c03c20f",
-      "name": "Add Screenshot File to Supabase Bucket",
+      "name": "添加截图文件到Supabase",
       "retryOnFail": false,
       "maxTries": 2,
       "waitBetweenTries": 5000,
@@ -426,7 +426,7 @@
     },
     {
       "parameters": {
-        "fileSelector": "=/screenshots/{{ $('Loop Over Alert Post URLs').item.json.screenshot_filename }}",
+        "fileSelector": "=/screenshots/{{ $('循环警报帖子URL').item.json.screenshot_filename }}",
         "options": {
           "dataPropertyName": "screenshot"
         }
@@ -438,7 +438,7 @@
         736
       ],
       "id": "3080e19d-c7c9-4d2a-992d-1b6b86bd5502",
-      "name": "Get Screenshot Local File",
+      "name": "获取本地截图文件",
       "executeOnce": false,
       "alwaysOutputData": true,
       "onError": "continueErrorOutput"
@@ -450,85 +450,85 @@
             {
               "id": "5688ea5f-d50a-4dab-8505-eedad2e98342",
               "name": "id",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.id } catch(e) { try { return $('Update as Alert Post Error').first().json.id } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.id } catch(e) { try { return $('更新为警报帖子错误').first().json.id } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "b6e68033-e0ee-4350-bbe8-f50533cd85d1",
               "name": "monitored_at",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.monitored_at } catch(e) { try { return $('Update as Alert Post Error').first().json.monitored_at } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.monitored_at } catch(e) { try { return $('更新为警报帖子错误').first().json.monitored_at } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "a2609abe-8ba2-4825-8c93-f813a70b7b30",
               "name": "post_title",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.post_title } catch(e) { try { return $('Update as Alert Post Error').first().json.post_title } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.post_title } catch(e) { try { return $('更新为警报帖子错误').first().json.post_title } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "7a7b8fc6-f376-4ae8-a3ca-b580571d099d",
               "name": "post_link",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.post_link } catch(e) { try { return $('Update as Alert Post Error').first().json.post_link } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.post_link } catch(e) { try { return $('更新为警报帖子错误').first().json.post_link } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "e25c5f01-255a-402d-bd37-6431987f4196",
               "name": "post_author_name",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.post_author_name } catch(e) { try { return $('Update as Alert Post Error').first().json.post_author_name } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.post_author_name } catch(e) { try { return $('更新为警报帖子错误').first().json.post_author_name } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "9726ec64-085c-430e-af3d-553b2fd15e91",
               "name": "post_author_link",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.post_author_link } catch(e) { try { return $('Update as Alert Post Error').first().json.post_author_link } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.post_author_link } catch(e) { try { return $('更新为警报帖子错误').first().json.post_author_link } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "c8c728b4-592b-43d3-b38e-c537020779d6",
               "name": "post_visibility",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.post_visibility } catch(e) { try { return $('Update as Alert Post Error').first().json.post_visibility } catch(e) { return 'error' } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.post_visibility } catch(e) { try { return $('更新为警报帖子错误').first().json.post_visibility } catch(e) { return 'error' } } })() }}",
               "type": "string"
             },
             {
               "id": "50f07185-3757-4fa1-986a-83f403bdb8fb",
               "name": "post_summary",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.post_summary } catch(e) { try { return $('Update as Alert Post Error').first().json.post_summary } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.post_summary } catch(e) { try { return $('更新为警报帖子错误').first().json.post_summary } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "47de6d4d-fb16-4bfa-8525-9ba2764980d9",
               "name": "post_screenshot_url",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.post_screenshot_url } catch(e) { try { return $('Update as Alert Post Error').first().json.post_screenshot_url } catch(e) { return '' } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.post_screenshot_url } catch(e) { try { return $('更新为警报帖子错误').first().json.post_screenshot_url } catch(e) { return '' } } })() }}",
               "type": "string"
             },
             {
               "id": "aa52db1b-f39f-493d-a086-472fed51c564",
               "name": "post_date",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.post_date } catch(e) { try { return $('Update as Alert Post Error').first().json.last_post_date } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.post_date } catch(e) { try { return $('更新为警报帖子错误').first().json.last_post_date } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "8ae8a1ca-3dc9-4d61-9eb1-5c2a6c9d5864",
               "name": "last_post_date",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.last_post_date } catch(e) { try { return $('Update as Alert Post Error').first().json.last_post_date } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.last_post_date } catch(e) { try { return $('更新为警报帖子错误').first().json.last_post_date } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "b78a423c-b221-4741-a003-fd8dfe8c36fd",
               "name": "last_post_author",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.last_post_author } catch(e) { try { return $('Update as Alert Post Error').first().json.last_post_author } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.last_post_author } catch(e) { try { return $('更新为警报帖子错误').first().json.last_post_author } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "a9f61f5d-2236-43b2-83bc-a3c518e38e38",
               "name": "last_post_author_link",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.last_post_author_link } catch(e) { try { return $('Update as Alert Post Error').first().json.last_post_author_link } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.last_post_author_link } catch(e) { try { return $('更新为警报帖子错误').first().json.last_post_author_link } catch(e) { return null } } })() }}",
               "type": "string"
             },
             {
               "id": "2c69aa4b-9af0-4cba-aa98-e14e351cd70f",
               "name": "entity_name",
-              "value": "={{ (() => { try { return $('Update Alert Post').first().json.entity_name } catch(e) { try { return $('Update as Alert Post Error').first().json.last_post_author_link } catch(e) { return null } } })() }}",
+              "value": "={{ (() => { try { return $('更新警报帖子').first().json.entity_name } catch(e) { try { return $('更新为警报帖子错误').first().json.last_post_author_link } catch(e) { return null } } })() }}",
               "type": "string"
             }
           ]
@@ -542,11 +542,11 @@
         1280
       ],
       "id": "e2524e89-b5f9-464f-908b-ea51e5bb0e7f",
-      "name": "Alert Post Structure"
+      "name": "警报帖子结构"
     },
     {
       "parameters": {
-        "command": "=rm -f /screenshots/{{ $('Loop Over Alert Post URLs').item.json.screenshot_filename }}"
+        "command": "=rm -f /screenshots/{{ $('循环警报帖子URL').item.json.screenshot_filename }}"
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
@@ -555,7 +555,7 @@
         1008
       ],
       "id": "99aa4c28-e387-4831-9181-83fc2fd5120f",
-      "name": "Delete Screenshot Local File"
+      "name": "删除本地截图文件"
     },
     {
       "parameters": {
@@ -570,7 +570,7 @@
         1232
       ],
       "id": "c99daab3-45d7-4f35-9bcb-2209310f5201",
-      "name": "Structured Output Parser"
+      "name": "结构化输出解析器"
     },
     {
       "parameters": {
@@ -584,7 +584,7 @@
         1296
       ],
       "id": "ddbcb947-4d0a-458d-bb92-f596c6ae8853",
-      "name": "Google Gemini Chat Model",
+      "name": "Google Gemini 聊天模型",
       "credentials": {
         "googlePalmApi": {
           "id": "s0TtVLCRa3k8hm0V",
@@ -594,7 +594,7 @@
     },
     {
       "parameters": {
-        "description": "You are analyzing a specific forum post page and your goal is to capture a screenshot and generate an analytical summary while maintaining natural, human-like behavior.\n\nYour job is to:\n- Plan natural interaction patterns for post analysis\n- Be patient and let the post page load completely\n- Handle blockers (CAPTCHA/DDoS/Cloudflare) with human-like timing:\n  * Hover before clicking verification buttons\n  * Wait natural intervals for page loads\n  * Type responses with variable speed if needed\n- Navigate the post content with smooth scrolling and natural pauses\n- Capture high-quality screenshots of the full viewport\n- Analyze visible content (title, author, replies, metadata) even when main content is hidden\n- Extract contextual information from thread discussions\n- Stay within the current post URL\n- Generate concise, analytical summaries under 500 characters\n\nRemember:\n1. Every action should mimic human reading behavior\n2. Add random delays between operations\n3. Use mouse movement before interactions\n4. Scroll through content naturally to view full post\n5. Handle login prompts vs. hidden content correctly:\n   - Page redirect to login = FAILED\n   - \"Login to view content\" message = SUCCESS (hidden content)\n6. Take screenshot AFTER content fully loads\n7. Analyze all visible elements for summary context\n\nAlways focus on: navigate naturally, handle challenges like a human, capture comprehensive screenshots, analyze stealthily."
+        "description": "你正在分析一个具体的论坛帖子页面，你的目标是在保持自然、类似人类行为的同时，捕获屏幕截图并生成分析摘要。\n\n你的工作是：\n- 规划自然交互模式以进行帖子分析\n- 保持耐心，等待帖子页面完全加载\n- 以类似人类的时机处理阻碍（CAPTCHA/DDoS/Cloudflare）：\n  * 在点击验证按钮前进行悬停\n  * 等待页面加载的自然间隔\n  * 如果需要，以可变速度输入响应\n- 通过平滑滚动和自然停顿来浏览帖子内容\n- 捕获全视口的高质量屏幕截图\n- 即使主要内容被隐藏，也要分析可见内容（标题，作者，回复，元数据）\n- 从讨论串中提取上下文信息\n- 停留在当前帖子 URL 内\n- 生成 500 个字符以内的简洁分析摘要\n\n记住：\n1. 每个动作都应该模仿人类阅读行为\n2. 在操作之间添加随机延迟\n3. 在交互前使用鼠标移动\n4. 自然滚动内容以查看完整帖子\n5. 正确处理登录提示与隐藏内容：\n   - 页面重定向到登录 = 失败 (FAILED)\n   - \"Login to view content\"（登录以查看内容）消息 = 成功 (SUCCESS)（隐藏内容）\n6. 在内容完全加载后拍摄屏幕截图\n7. 分析所有可见元素以获取摘要上下文\n\n始终专注于：自然导航，像人类一样处理挑战，捕获全面的屏幕截图，隐秘分析。"
       },
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1,
@@ -603,7 +603,7 @@
         1296
       ],
       "id": "da57f7e5-10a9-4099-a702-19d559285cba",
-      "name": "Think"
+      "name": "思考(Think)工具"
     },
     {
       "parameters": {
@@ -624,7 +624,7 @@
         1296
       ],
       "id": "5ffedb2c-b811-46ae-a718-c4352fcaf580",
-      "name": "Playwright MCP"
+      "name": "Playwright MCP工具"
     },
     {
       "parameters": {
@@ -687,7 +687,7 @@
       },
       "id": "5817b091-4748-4bac-8b24-cf74037dad6b",
       "typeVersion": 1.1,
-      "name": "Forums Post to Discord",
+      "name": "论坛帖子发到Discord",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
         -144,
@@ -704,8 +704,8 @@
         "embeds": {
           "values": [
             {
-              "description": "=### {{ $('Forums Post to Discord').first().json.forum_name }}\n- {{ $('Forums Post to Discord').first().json.forum_url_path }}\n`Success Forum Tracking • Check the posts above`",
-              "author": "✅ Forum tracking completed",
+              "description": "=### {{ $('论坛帖子发到Discord').first().json.forum_name }}\n- {{ $('论坛帖子发到Discord').first().json.forum_url_path }}\n`Success Forum Tracking • Check the posts above`",
+              "author": "✅ 论坛追踪完成",
               "color": "#2ECC71",
               "timestamp": "={{ $now.toISO() }}"
             }
@@ -719,7 +719,7 @@
         480
       ],
       "id": "00fc90f8-a51e-4b12-b286-f4ef8d6caebf",
-      "name": "Inform Tracking Completed",
+      "name": "通知追踪完成",
       "webhookId": "7b0843fe-ee9e-45de-8198-74a6adc41eb2",
       "executeOnce": true,
       "credentials": {
@@ -736,7 +736,7 @@
         "text": "={{ $json.post_link }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are an AI agent responsible for parsing ARIA snapshot YAML data from a specific {{ $('Forums Post to Discord').item.json.forum_name }} post page using Playwright MCP tools. Your task is to access the forum post URL, capture a screenshot, and generate an analytical summary while handling various access scenarios.\n\n## IMPORTANT: OUTPUT STATUS HANDLING\n\nYour response MUST follow these status rules:\n\n### SUCCESS SCENARIO (task_status: \"success\")\n- When you successfully access the post page (even if content is hidden)\n- Output format: `{\"task_status\": \"success\", \"post_analysis\": {...}}`\n- Include screenshot and summary even for hidden content posts\n- NEVER include \"failed_cause\" in success responses\n\n### FAILURE SCENARIOS (task_status: \"failed\")  \n- When you cannot access the post page at all\n- Output format: `{\"task_status\": \"failed\", \"failed_cause\": \"reason\", \"error_details\": \"optional details\"}`\n- NEVER include \"post_analysis\" in failed responses\n\n**Failed Cause Options:**\n- `\"login_needed\"`: When page redirects to login/authentication form\n- `\"bot_captcha\"`: When blocked by anti-bot systems, CAPTCHA, or Cloudflare protection  \n- `\"page_unreachable\"`: When page returns errors, times out, or is completely inaccessible\n\n**CRITICAL DISTINCTION:**\n- **FAILED login_needed**: Page redirects to login form/authentication page\n- **SUCCESS with hidden content**: Page loads but shows \"You must register or login to view this content\" - this is SUCCESS, not failure!\n\n---\n\n## POST ANALYSIS PROCESS\n\n### Step 1: Navigate and Initial Assessment\n\n1. Use Think tool to plan your approach\n2. Use `browser_navigate` to go to the target post URL: `{{ $json.post_link }}`\n3. Take `browser_snapshot` to capture the page content\n4. Determine if this is a failure scenario or success scenario\n\n### Step 2: Status Determination\n\n**Check for FAILURE conditions FIRST:**\n- Page redirected to login/authentication form\n- Anti-bot protection / CAPTCHA / Cloudflare challenge  \n- Page errors (404, 500, timeout, etc.)\n- Complete inaccessibility\n\n**If any failure condition detected:**\n- Return immediately with failed status\n- Do NOT attempt screenshot or analysis\n\n### Step 3: Success Processing (Screenshot + Analysis)\n\n**If page loads successfully (even with hidden content):**\n\n#### A. Take Screenshot\n1. Generate screenshot filename using these rules:\n   - Remove schema and domain from `{{ $json.post_link }}` (keep only the URL path)\n   - Remove any leading slash from the path\n   - Keep all existing hyphens in the path\n   - Add identifier `{{ $json.post_id }}` at beginning with hyphen separator\n   - Append '.jpeg' extension\n   - Final screenshot filename: \n     - `{{ $json.screenshot_filename }}`\n\n2. **MANDATORY**: Use `browser_take_screenshot` tool with:\n   - `filename`: Use the generated filename\n   - `raw`: Set to false (JPEG format)\n   - Do NOT use `element` or `ref` parameters (full viewport)\n\n#### B. Content Analysis\n1. **Determine Content Status**:\n   - `\"visible\"`: Post content is fully accessible\n   - `\"hidden\"`: Content blocked by \"register/login to view\" message\n   - `\"partial\"`: Some content visible, some hidden\n\n2. **Extract Available Information**:\n   - Post title from page header/breadcrumbs\n   - Author username and profile link if visible\n   - Post date, replies count, views count if available\n   - Any visible thread context, replies, or metadata\n\n3. **Generate Summary** (MUST be under 500 characters):\n   - Analyze all available information (title, context, replies, metadata)\n   - For hidden content: summarize based on title, author, and any visible thread discussion\n   - For visible content: provide analytical summary of the actual post content\n   - Focus on what the post is about, its significance, and key points\n\n### Example Success Outputs:\n\n**Visible Content:**\n```json\n{\n  \"task_status\": \"success\",\n  \"post_analysis\": {\n    \"post_visibility\": \"visible\",\n    \"post_summary\": \"Post claims to share recent CIA database leak. Author Jigsaw presents download links and technical details. Multiple users discuss verification methods and express interest. High engagement suggests credible breach claim.\",\n    \"screenshot_filename\": \"12345-CIA-DB-Leak.jpeg\"\n  }\n}\n```\n\n**Hidden Content:**\n```json\n{\n  \"task_status\": \"success\", \n  \"post_analysis\": {\n    \"post_visibility\": \"hidden\",\n    \"post_summary\": \"CIA-related data breach post by user Jigsaw. Content hidden behind login but thread shows 220K+ views and active discussion. Based on replies, appears to involve recent intelligence database leak with verification discussions.\",\n    \"screenshot_filename\": \"12345-CIA-DB-Leak.jpeg\"\n  }\n}\n```\n\n**Failure Example:**\n```json\n{\n  \"task_status\": \"failed\",\n  \"failed_cause\": \"bot_captcha\", \n  \"error_details\": \"Cloudflare protection preventing page access\"\n}\n```\n\n---\n\n## ANTI-BOT HANDLING\n\n### IF browser_snapshot shows anti-bot protection:\n- Use `browser_wait_for` with time: 10 for automatic bypass\n- Take another `browser_snapshot` to check if page loaded\n- If still blocked, return failed status with \"bot_captcha\"\n\n### IF captcha verification appears:\n- Use `browser_hover` then `browser_click` on verification button\n- Use `browser_wait_for` with time: 5\n- Take final `browser_snapshot`\n- If verification fails, return failed status with \"bot_captcha\"\n\n---\n\n## CRITICAL REMINDERS\n\n1. **Screenshot is MANDATORY** for all success cases\n2. **Hidden content ≠ Failed login** - treat hidden content as success\n3. **Extract context from visible elements** even when main content is hidden\n4. **Summary must be under 500 characters** and analytical\n5. **Never generate fake data** - if page fails to load, return failed status\n6. **Follow conditional schema strictly** - success needs post_analysis, failed needs failed_cause",
+          "systemMessage": "=你是一个 AI 智能体，负责使用 Playwright MCP 工具从具体的 {{ $('论坛帖子发到Discord').item.json.forum_name }} 帖子页面解析 ARIA 快照 YAML 数据。你的任务是访问论坛帖子 URL，捕获屏幕截图并在处理各种访问场景时生成分析摘要。\n\n## 重要：输出状态处理\n\n你的响应必须遵循以下状态规则：\n\n### 成功场景 (task_status: \"success\")\n- 当你成功访问帖子页面时（即使内容被隐藏）\n- 输出格式：`{\"task_status\": \"success\", \"post_analysis\": {...}}`\n- 即使是隐藏内容的帖子，也要包含屏幕截图和摘要\n- 在成功响应中**绝不**包含 \"failed_cause\"\n\n### 失败场景 (task_status: \"failed\")  \n- 当你根本无法访问帖子页面时\n- 输出格式：`{\"task_status\": \"failed\", \"failed_cause\": \"reason\", \"error_details\": \"optional details\"}`\n- 在失败响应中**绝不**包含 \"post_analysis\"\n\n**失败原因选项：**\n- `\"login_needed\"`: 当页面重定向到登录/认证表单时\n- `\"bot_captcha\"`: 当被反爬虫系统、CAPTCHA 或 Cloudflare 保护阻止时  \n- `\"page_unreachable\"`: 当页面返回错误、超时或完全无法访问时\n\n**关键区别：**\n- **失败 (FAILED) login_needed**：页面重定向到登录表单/认证页面\n- **成功 (SUCCESS) 但内容隐藏**：页面加载但显示 \"You must register or login to view this content\"（必须注册或登录才能查看此内容） - 这是成功，不是失败！\n\n---\n\n## 帖子分析流程\n\n### 步骤 1：导航与初步评估\n\n1. 使用 Think 工具规划你的方法\n2. 使用 `browser_navigate` 访问目标帖子 URL: `{{ $json.post_link }}`\n3. 使用 `browser_snapshot` 捕获页面内容\n4. 确定这是失败场景还是成功场景\n\n### 步骤 2：状态判定\n\n**首先检查失败条件：**\n- 页面重定向到登录/认证表单\n- 反爬虫保护 / CAPTCHA / Cloudflare 挑战  \n- 页面错误（404, 500, 超时等）\n- 完全无法访问\n\n**如果检测到任何失败条件：**\n- 立即返回失败状态\n- **不要**尝试截图或分析\n\n### 步骤 3：成功处理（截图 + 分析）\n\n**如果页面成功加载（即使内容隐藏）：**\n\n#### A. 拍摄屏幕截图\n1. 使用以下规则生成屏幕截图文件名：\n   - 从 `{{ $json.post_link }}` 中移除 schema 和域名（只保留 URL 路径）\n   - 移除路径中的任何前导斜杠\n   - 保留路径中现有的连字符\n   - 在开头添加标识符 `{{ $json.post_id }}` 并用连字符分隔\n   - 追加 '.jpeg' 扩展名\n   - 最终截图文件名： \n     - `{{ $json.screenshot_filename }}`\n\n2. **强制性**：使用 `browser_take_screenshot` 工具，参数如下：\n   - `filename`: 使用生成的文件名\n   - `raw`: 设置为 false (JPEG 格式)\n   - **不要**使用 `element` 或 `ref` 参数（全视口）\n\n#### B. 内容分析\n1. **确定内容状态**：\n   - `\"visible\"`: 帖子内容完全可访问\n   - `\"hidden\"`: 内容被 \"register/login to view\" 消息阻挡\n   - `\"partial\"`: 部分内容可见，部分隐藏\n\n2. **提取可用信息**：\n   - 页面头部/面包屑中的帖子标题\n   - 作者用户名和个人资料链接（如果可见）\n   - 帖子日期、回复计数、浏览计数（如果可用）\n   - 任何可见的讨论串上下文、回复或元数据\n\n3. **生成摘要**（必须在 500 字符以内）：\n   - 分析所有可用信息（标题、上下文、回复、元数据）\n   - 对于隐藏内容：根据标题、作者和任何可见的讨论串进行总结\n   - 对于可见内容：提供实际帖子内容的分析摘要\n   - 专注于帖子关于什么、其重要性和关键点\n\n### 成功输出示例：\n\n**可见内容：**\n```json\n{\n  \"task_status\": \"success\",\n  \"post_analysis\": {\n    \"post_visibility\": \"visible\",\n    \"post_summary\": \"帖子声称分享最近的 CIA 数据库泄露。作者 Jigsaw 展示了下载链接和技术细节。多名用户讨论验证方法并表示感兴趣。高参与度表明泄露声明的可信度。\",\n    \"screenshot_filename\": \"12345-CIA-DB-Leak.jpeg\"\n  }\n}\n```\n\n**隐藏内容：**\n```json\n{\n  \"task_status\": \"success\", \n  \"post_analysis\": {\n    \"post_visibility\": \"hidden\",\n    \"post_summary\": \"用户 Jigsaw 发布的与 CIA 相关的数据泄露帖子。内容隐藏在登录后面，但讨论串显示有 220K+ 浏览量和活跃讨论。根据回复，似乎涉及包含验证讨论的近期情报数据库泄露。\",\n    \"screenshot_filename\": \"12345-CIA-DB-Leak.jpeg\"\n  }\n}\n```\n\n**失败示例：**\n```json\n{\n  \"task_status\": \"failed\",\n  \"failed_cause\": \"bot_captcha\", \n  \"error_details\": \"Cloudflare protection preventing page access\"\n}\n```\n\n---\n\n## 反爬虫 (ANTI-BOT) 处理\n\n### 如果 browser_snapshot 显示反爬虫保护：\n- 使用 `browser_wait_for` 等待时间：10 用于自动绕过\n- 再次拍摄 `browser_snapshot` 检查页面是否加载\n- 如果仍然被屏蔽，返回带有 \"bot_captcha\" 的失败状态\n\n### 如果出现验证码 (captcha) 验证：\n- 使用 `browser_hover` 然后 `browser_click` 点击验证按钮\n- 使用 `browser_wait_for` 等待时间：5\n- 拍摄最终 `browser_snapshot`\n- 如果验证失败，返回带有 \"bot_captcha\" 的失败状态\n\n---\n\n## 关键提醒\n\n1. **屏幕截图是强制性的** 对于所有成功案例\n2. **隐藏内容 ≠ 登录失败** - 将隐藏内容视为成功\n3. **即使主要内容隐藏也要从可见元素中提取上下文**\n4. **摘要必须在 500 字符以内** 且具有分析性\n5. **绝不生成伪造数据** - 如果页面加载失败，返回失败状态\n6. **严格遵循条件模式** - 成功需要 post_analysis，失败需要 failed_cause",
           "passthroughBinaryImages": true
         }
       },
@@ -747,7 +747,7 @@
         1008
       ],
       "id": "b506ac93-767e-485a-a151-258da29d14d7",
-      "name": "AI Agent",
+      "name": "AI 智能体",
       "retryOnFail": true,
       "maxTries": 2,
       "waitBetweenTries": 5000,
@@ -756,267 +756,267 @@
   ],
   "pinData": {},
   "connections": {
-    "Send Normal Posts": {
+    "发送普通帖子": {
       "main": [
         [
           {
-            "node": "Merge Posts",
+            "node": "合并帖子",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Send Alert Posts": {
+    "发送警报帖子": {
       "main": [
         [
           {
-            "node": "Merge Posts",
+            "node": "合并帖子",
             "type": "main",
             "index": 1
           }
         ]
       ]
     },
-    "Merge Posts": {
+    "合并帖子": {
       "main": [
         [
           {
-            "node": "Update Sent Status",
+            "node": "更新发送状态",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Switch Post Type": {
+    "切换帖子类型": {
       "main": [
         [
           {
-            "node": "Send Normal Posts",
+            "node": "发送普通帖子",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Loop Over Alert Post URLs",
+            "node": "循环警报帖子URL",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Update Sent Status": {
+    "更新发送状态": {
       "main": [
         [
           {
-            "node": "Inform Tracking Completed",
+            "node": "通知追踪完成",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Loop Over Alert Post URLs": {
+    "循环警报帖子URL": {
       "main": [
         [
           {
-            "node": "Send Alert Posts",
+            "node": "发送警报帖子",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Rate Limit",
+            "node": "速率限制",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Rate Limit": {
+    "速率限制": {
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Update Alert Post": {
+    "更新警报帖子": {
       "main": [
         [
           {
-            "node": "Delete Screenshot Local File",
+            "node": "删除本地截图文件",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Switch Alert Agent Output": {
+    "切换警报智能体输出": {
       "main": [
         [
           {
-            "node": "Get Screenshot Local File",
+            "node": "获取本地截图文件",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Update as Alert Post Error",
+            "node": "更新为警报帖子错误",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Update as Alert Post Error",
+            "node": "更新为警报帖子错误",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Update as Alert Post Error": {
+    "更新为警报帖子错误": {
       "main": [
         [
           {
-            "node": "Delete Screenshot Local File",
+            "node": "删除本地截图文件",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Add Screenshot File to Supabase Bucket": {
+    "添加截图文件到Supabase": {
       "main": [
         [
           {
-            "node": "Update Alert Post",
+            "node": "更新警报帖子",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Update as Alert Post Error",
+            "node": "更新为警报帖子错误",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get Screenshot Local File": {
+    "获取本地截图文件": {
       "main": [
         [
           {
-            "node": "Add Screenshot File to Supabase Bucket",
+            "node": "添加截图文件到Supabase",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Update as Alert Post Error",
+            "node": "更新为警报帖子错误",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Alert Post Structure": {
+    "警报帖子结构": {
       "main": [
         [
           {
-            "node": "Loop Over Alert Post URLs",
+            "node": "循环警报帖子URL",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Delete Screenshot Local File": {
+    "删除本地截图文件": {
       "main": [
         [
           {
-            "node": "Alert Post Structure",
+            "node": "警报帖子结构",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Structured Output Parser": {
+    "结构化输出解析器": {
       "ai_outputParser": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_outputParser",
             "index": 0
           }
         ]
       ]
     },
-    "Google Gemini Chat Model": {
+    "Google Gemini 聊天模型": {
       "ai_languageModel": [
         [
           {
-            "node": "Structured Output Parser",
+            "node": "结构化输出解析器",
             "type": "ai_languageModel",
             "index": 0
           },
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "Think": {
+    "思考(Think)工具": {
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_tool",
             "index": 0
           }
         ]
       ]
     },
-    "Playwright MCP": {
+    "Playwright MCP工具": {
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI 智能体",
             "type": "ai_tool",
             "index": 0
           }
         ]
       ]
     },
-    "AI Agent": {
+    "AI 智能体": {
       "main": [
         [
           {
-            "node": "Switch Alert Agent Output",
+            "node": "切换警报智能体输出",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Forums Post to Discord": {
+    "论坛帖子发到Discord": {
       "main": [
         [
           {
-            "node": "Switch Post Type",
+            "node": "切换帖子类型",
             "type": "main",
             "index": 0
           }

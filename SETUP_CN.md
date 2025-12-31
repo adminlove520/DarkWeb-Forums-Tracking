@@ -1,360 +1,173 @@
-# 🕵️ DarkWeb Forums Tracker - 完整设置指南
+# 🕵️ DarkWeb Forums Tracker - 保姆级部署指南
 
-从git克隆到使用Discord警报监控暗网论坛的完整部署指南。
+本指南将带你一步步部署这套暗网威胁情报监控系统，从环境配置到最终接收 Discord 警报。
 
-## 前置条件
+## 📋 准备工作
 
-- **Docker** (v20.10+) 和 **Docker Compose** (v2.0+)
-- **Git** 用于克隆仓库
-- **Supabase Cloud账户** (免费套餐可用)
-- **Google Gemini API密钥** (可从 [Google AI Studio](https://aistudio.google.com/) 免费获取)
-- **Discord webhook URL** 用于接收通知
+在开始之前，请确保你已经准备好了以下环境和账号：
+
+- **Docker** (v20.10+) 和 **Docker Compose** (v2.0+)：系统的运行基础。
+- **Git**：用于下载代码。
+- **Supabase Cloud 账号**：[注册免费账号](https://supabase.com)，用于数据库和截图存储。
+- **Google Gemini API Key**：[免费申请](https://aistudio.google.com/)，用于驱动 AI 智能分析。
+- **Discord Webhook**：用于接收报警通知。
 
 ---
 
-## 🎯 快速部署
+## 🚀 快速部署流程
 
-### 1. 克隆并配置
+### 第一步：克隆代码与环境配置
 
 ```bash
+# 1. 下载项目代码
 git clone https://github.com/brunosergi/darkweb-forums-tracker.git
 cd darkweb-forums-tracker
+
+# 2. 复制配置文件
 cp .env.example .env
 ```
 
-### 2. Supabase Cloud设置
+### 第二步：配置 Supabase 云端后台
 
-1. **创建项目**: 访问 [supabase.com](https://supabase.com) 并创建新项目
-2. **获取项目URL**: 从设置 → API 复制您的项目URL
-3. **获取服务角色密钥**: 从设置 → API 复制您的服务角色密钥
-4. **运行数据库脚本**: 
-   - 进入Supabase仪表板中的SQL编辑器
-   - 复制并运行 `supabase/supabase.sql` 中的完整脚本
-5. **创建截图存储桶**:
-   - 进入Supabase仪表板中的存储
-   - 创建名为 `screenshots` 的新存储桶
-   - 将其设置为 **公开** (Discord嵌入需要)
-   - 可选: 设置500KB上传限制并限制为 `image/jpeg`
+我们需要 Supabase 来存储监控到的帖子数据和截图证据。
 
-### 3. 编辑环境变量
+1. **创建项目**：登录 [supabase.com](https://supabase.com) 创建一个新项目。
+2. **获取 API 凭证**：
+   - 进入 **Settings (设置)** -> **API**。
+   - 复制 **Project URL** (项目地址)。
+   - 复制 **service_role** secret (注意：**不是** anon key，我们需要 service_role 权限来绕过部分限制进行后端操作)。
+3. **初始化数据库**：
+   - 进入左侧菜单的 **SQL Editor**。
+   - 打开项目中的 `supabase/supabase.sql` 文件，复制全部内容。
+   - 在 Supabase 的 SQL Editor 中粘贴并点击 **Run** 执行，建表成功后你会看到 `Success` 提示。
+4. **配置截图存储**：
+   - 进入左侧菜单的 **Storage**。
+   - 点击 **New Bucket** 创建一个新桶。
+   - **Name (名称)** 填入：`screenshots`。
+   - **Public (公开)**：**必须开启** (Discord 需要公开链接才能展示图片预览)。
+   - (可选) Save 后，可以在 Configuration 中设置上传限制（如 500KB）和文件类型（image/jpeg）。
 
-打开 `.env` 并配置以下必要变量:
+### 第三步：填入关键配置
+
+使用文本编辑器打开本地的 `.env` 文件，填入刚才获取的信息：
 
 ```bash
-# Supabase Cloud配置
+# Supabase 配置
 SUPABASE_URL=https://your-project.supabase.co
+# 【重要】这里填入 service_role key，而不是 anon key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 
-# N8N配置（生成强随机字符串）
-N8N_ENCRYPTION_KEY=your-super-secret-key-here-32-chars-min
+# N8N 安全配置 (生成一个随机字符串即可)
+N8N_ENCRYPTION_KEY=super-secure-random-string-at-least-32-chars
 
-# 数据库配置
-POSTGRES_PASSWORD=your-super-secret-and-long-postgres-password
+# 数据库密码 (N8N 内部使用的 Postgres，随便设置一个复杂的密码)
+POSTGRES_PASSWORD=my-secret-db-password
 POSTGRES_DB=postgres
 ```
 
-### 4. 启动平台
+### 第四步：一键启动
 
 ```bash
 docker compose up -d
 ```
 
-这将自动:
-- 为N8N设置PostgreSQL数据库
-- 配置Redis用于N8N队列管理
-- 启动带有VNC支持和共享浏览器会话的Playwright MCP
-- 导入带有增强AI代理和重试逻辑的N8N工作流
-- 使用健康检查启动所有服务
-
-### 5. 验证服务运行状态
-
-```bash
-docker compose ps
-```
-
-所有服务应显示 "healthy" 状态。
+> **提示**：首次启动时，系统会构建包含中文插件的 N8N 镜像，可能需要几分钟时间，请耐心等待。
+> 启动完成后，你可以使用 `docker compose ps` 查看服务状态，所有服务都应显示 `healthy` 或 `running`。
 
 ---
 
-## 🔧 N8N配置
+## 🔧 N8N 初始化配置
 
-### 访问N8N编辑器
+服务启动后，我们需要进行一次性的配置来连接各个组件。
 
-1. 打开 **http://localhost:5678**
-2. 创建您的管理员账户（首次设置）
-3. 配置凭证（这是唯一需要手动操作的步骤）
+### 1. 登录 N8N
+访问浏览器：**http://localhost:5678**
+首次访问需要设置管理员账户，请按提示创建。
 
-### 添加Supabase凭证
+### 2. 配置凭证 (Credentials)
+这是最关键的一步。我们需要在 N8N 中添加外部服务的连接凭证。
+点击左侧菜单的 **Credentials (凭证)** -> **Add Credential**。
 
-**设置** → **凭证** → **添加新凭证**
+#### a. 添加 Supabase 凭证
+- **类型**：搜索并选择 `Supabase API`
+- **Name**: `Supabase account` (建议保持此默认名称，方便对应)
+- **Host**: 填入你的 Supabase Project URL (如 `https://xxx.supabase.co`)
+- **Service Role Key**: 填入你的 `service_role` key
+- 点击 **Save**。
 
-**Supabase API凭证**:
-- **名称**: `Supabase Cloud`
-- **URL**: 您的Supabase项目URL (例如: `https://your-project.supabase.co`)
-- **服务角色密钥**: 使用Supabase项目设置中的 `SUPABASE_SERVICE_ROLE_KEY`
+#### b. 添加 Google Gemini 凭证
+- **类型**：搜索 `Google Gemini(PaLM) API`
+- **Name**: `Google Gemini(PaLM) Api account`
+- **API Key**: 填入你的 Gemini API Key
+- 点击 **Save**。
 
-### 添加Google Gemini凭证
+#### c. 添加 Discord Webhook 凭证
+1. **获取 Webhook URL**：
+   - 在 Discord 频道设置 -> Integrations -> Webhooks -> New Webhook。
+   - 复制生成的 Webhook URL。
+2. **在 N8N 中添加**：
+   - **类型**：搜索 `Discord Webhook`
+   - **Name**: `Discord Darkforums Chat`
+   - **Webhook URL**: 粘贴刚才复制的 URL。
+   - 点击 **Save**。
 
-**添加Google Gemini API凭证**:
-- **名称**: `Gemini API`
-- **API密钥**: 从 [Google AI Studio](https://aistudio.google.com/) 获取的API密钥
+### 3. 检查与激活工作流
 
-### 添加Discord Webhook凭证
-
-**创建Discord Webhook**:
-1. **选择Discord频道**: 进入您想要接收论坛通知的Discord频道
-2. **编辑频道设置**: 右键点击频道 → **编辑频道**
-3. **访问集成**: 进入 **集成** 标签页
-4. **创建新Webhook**: 点击 **创建Webhook** (或 **查看Webhooks** → **新建Webhook**)
-5. **配置机器人**:
-   - **名称**: `DarkWeb Forums Tracker` (或您喜欢的名称)
-   - **频道**: 选择通知的目标频道
-   - **头像**: 可选 - 上传自定义机器人logo
-6. **复制Webhook URL**: 点击 **复制Webhook URL**
-
-**在N8N中添加Discord Webhook凭证**:
-- **名称**: `Discord Webhook`
-- **Webhook URL**: 粘贴您复制的Discord Webhook URL
-- **测试**: 发送测试消息以验证Webhook是否正常工作
-
-### 更新工作流凭证
-
-**重要提示**: 即使节点没有显示错误，也请手动验证以下工作流中的凭证:
-
-**darkweb-get-forum-posts**:
-- "AI Agent" → "Google Gemini Chat Model" 节点
-- "Supabase RPC Check Existing URLs" → "Supabase RPC" HTTP请求节点
-- "Add Posts to Supabase" → Supabase节点
-- 所有Discord节点
-- "Keywords" → 使用规范名称和变体配置实体字典
-
-<div>
-
-<img src="images/workflow_get_forum_posts.png" alt="工作流：获取论坛帖子" width="500">
-
-</div>
-
-**darkweb-send-forum-posts-to-discord**:
-- "AI Agent" → "Google Gemini Chat Model" 节点
-- "Add Screenshot File to Supabase Bucket" → "Supabase RPC" HTTP请求节点
-- "Update Alert Post" → Supabase更新节点
-- "Update as Alert Post Error" → Supabase更新节点
-- "Update Sent Status" → Supabase更新节点
-- 所有Discord节点
-
-<div>
-
-<img src="images/workflow_send_forum_posts_to_discord.png" alt="工作流：发送论坛帖子到Discord" width="500">
-
-</div>
-
-### 激活工作流
-
-1. 进入N8N中的 **工作流**
-2. 点击以下两个工作流的 **激活** 开关:
-   - `darkweb-get-forum-posts` (带有重试逻辑和实体检测的主要监控工作流)
-   - `darkweb-send-forum-posts-to-discord` (Discord通知 + 带有增强日志的警报帖子AI代理工作流)
+1. 点击左侧 **Workflows**。
+2. 你应该能看到两个已导入的工作流：
+   - `darkweb-get-forum-posts` (负责监控和抓取)
+   - `darkweb-send-forum-posts-to-discord` (负责分析和推送)
+3. **重要**：如果工作流节点因为我们之前的重命名显示警告，请双击打开工作流，检查那些带有红色感叹号的节点，确保它们的 `Credential` 字段选中了我们刚才创建的凭证。
+4. 将两个工作流右上角的 **Active** 开关打开（变为绿色）。
 
 ---
 
-## 🖥️ VNC配置（人工干预）
+## 🖥️ VNC 远程交互 (不仅是看，还能动！)
 
-### 访问VNC界面
+本系统不仅仅是后台爬虫，它还提供了一个可视化的浏览器界面。
 
-**Web浏览器（推荐）**: http://localhost:6080
-- 无需安装软件
-- 适用于任何现代浏览器
-- 点击 "Connect" 访问桌面
+**访问地址**：http://localhost:6080
 
-**VNC客户端**: `localhost:5900`
-- 使用TightVNC、RealVNC或任何VNC查看器
-- 无需密码（开发模式）
+### 这个界面有什么用？
+- **看直播**：你可以实时看到 AI 正在浏览器里做什么。
+- **帮把手**：
+    - 如果 AI 卡在 **Cloudflare 验证** 页面，你可以进去点一下。
+    - 如果论坛需要 **登录** 才能看帖子，你可以手动输一次账号密码（选中 "Remember me"），Playwright 容器会把 Cookie 保存下来，下次 AI 就能自动以登录状态访问了。
 
-### 何时使用VNC
-
-- **CAPTCHA解决**: 当AI代理在DDoS-Guard或论坛CAPTCHA上卡住时
-- **手动登录**: 首次登录受保护的论坛
-- **会话恢复**: 当登录会话过期时重新认证
-- **机器人检测**: 绕过需要人工交互的反机器人措施
-
-VNC界面运行完整的Chrome浏览器，您可以看到AI代理看到的内容，并与任何需要人工输入的元素进行交互。
-
-### 手动浏览器控制
-
-当您需要手动启动Chromium进行故障排除、认证或CAPTCHA解决时:
-
-**VNC Web界面**:
-- 按下 **Alt+F2** 并输入: `chromium`
-- 或右键点击桌面 → 应用程序 → 运行终端并输入: `chromium &`
-
-**容器终端**:
-```bash
-docker exec -it darkweb-forums-tracker-playwright bash
-chromium &
-```
-
-这非常适合解决CAPTCHA、设置认证cookie、调试失败的抓取或手动导航AI代理无法自动处理的复杂登录流程。
-
-<div align="center">
-
-<img src="images/vnc_browser_interaction.png" alt="VNC浏览器界面 - AI代理论坛访问" width="500">
-
-</div>
-
-<div align="center">
-
-<img src="images/vnc_manual_captcha.png" alt="VNC手动解决CAPTCHA" width="350" style="margin-right: 10px;">
-<img src="images/vnc_manual_login.png" alt="VNC手动登录" width="350">
-
-</div>
+### 如何操作
+这就像是一个网页版的远程桌面。
+- 如果进去是黑屏但有终端窗口，说明浏览器还没启动。
+- 若要手动启动浏览器调试：
+    - 右键桌面 -> Applications -> Shells -> Bash
+    - 输入命令：`chromium &`
 
 ---
 
-## 🎉 开始监控论坛
+## 🔄 进阶：如何监控其他论坛？
 
-### 验证一切正常工作
+目前的默认配置是针对 `DarkForums.io` 的。如果你想监控其他类似论坛：
 
-1. **检查N8N**: http://localhost:5678 - 两个工作流都应处于活动状态
-2. **测试VNC**: http://localhost:6080 - 应显示带有浏览器的桌面
-3. **检查Discord**: 验证Webhook URL是否正常工作
-4. **数据库**: 确认Supabase中存在 `darkweb_forums` 表
-
-### 监控执行情况
-
-**系统每4小时自动运行一次，但您可以**:
-- **手动触发**: 在N8N中手动执行工作流进行测试
-- **检查日志**: 在N8N中查看执行日志进行调试
-- **VNC监控**: 通过VNC实时观察浏览器自动化
-- **Discord更新**: 接收扫描开始/完成/失败的通知
-
-### 预期的Discord流程
-
-1. **"Forum tracking started"** - 扫描开始，带有跟踪通知
-2. **论坛帖子** - 普通帖子（蓝色）和实体警报（红色，带有截图和AI摘要）
-3. **重试通知** - 如果初始尝试失败，显示黄色警报
-4. **"Forum tracking completed"** - 扫描完成，带有时间戳和处理统计信息
+1. 打开 `darkweb-get-forum-posts` 工作流。
+2. 找到首部的 **Code** 节点（通常命名为 `xxx Metadata`）。
+3. 修改 JSON 配置中的 `forum_urls_to_track` 数组，填入你想监控的板块 URL。
+4. (高阶) 如果目标论坛结构差异很大，你需要调整 **AI Agent** 节点的 `System Message` (提示词)，告诉 AI 如何在该特定论坛上定位标题、作者和时间。
 
 ---
 
-## 🔄 自定义
+## ❓ 常见问题排查
 
-### 添加更多论坛
+**Q: 为什么 N8N 里节点名称是中文的？**
+A: 为了方便使用，我们已经将工作流汉化。如果你如果不喜欢，可以切回英文版 Docker 镜像（修改 docker-compose.yml），但建议保留中文以便理解。
 
-**在 `darkweb-get-forum-posts` 工作流中**:
-1. 更新 "DarkForums.st Metadata" 节点
-2. 向论坛列表添加新的论坛URL
-3. 修改AI代理提示以适应论坛特定的解析
+**Q: 截图上传失败？**
+A: 请检查 Supabase 的 Storage Bucket 设置，确保 `screenshots` 桶是 **Public** 的，且你的 `service_role` key 配置正确。
 
-### 配置实体检测关键词
+**Q: AI 报错 `bot_captcha`？**
+A: 这说明遇到了很难缠的反爬盾。请立刻访问 VNC (http://localhost:6080)，手动帮 AI 过一下验证，通常过一次后 Session 会保持一段时间。
 
-**在 `darkweb-get-forum-posts` 工作流中**:
-1. 找到 "Keywords" 节点
-2. 使用规范名称和变体更新实体字典:
-```javascript
-[
-  ["lockbit"],
-  ["facebook", "meta"],
-  ["bank of america", "bak"],
-  ["united states", "united states of america", " usa ", "american"],
-  ["brasil", "brazil", ".br", ".com.br", "brazilian"],
-  ["twitter", "x.com", "tweet"]
-]
-```
-**注意**: 每个数组代表一个实体 - 第一个元素是规范名称，其他是变体/别名。
-
-### 更改AI模型
-
-**从Gemini切换到其他模型**:
-1. 在N8N中添加新的AI提供商凭证
-2. 替换 "Google Gemini Chat Model" 节点
-3. 针对不同模型的能力更新提示
+**Q: 数据库里没数据？**
+A: 检查 Supabase 的 Database 面板。如果表是空的，可能是 `supabase.sql` 脚本没跑成功，或者是 N8N 连接 Supabase 失败（检查凭证）。
 
 ---
 
-## 🛠️ 服务URL
-
-| 服务 | URL | 用途 |
-|------|-----|------|
-| **N8N工作流** | http://localhost:5678 | 自动化管理 |
-| **VNC浏览器** | http://localhost:6080 | 人工干预界面 |
-| **Supabase控制台** | 您的云项目URL | 数据库管理 |
-| **Playwright MCP** | http://localhost:8831 | 浏览器自动化服务 |
-
----
-
-## 🔧 故障排除
-
-### 常见问题
-
-**N8N凭证错误**:
-- 验证所有凭证都已保存在N8N UI中
-- 检查Supabase URL和服务角色密钥
-- 在N8N凭证设置中测试凭证
-
-**工作流执行失败**:
-- 检查Google Gemini API配额/速率限制（重试逻辑将尝试2次）
-- 验证Playwright MCP是否可在端口8831访问
-- 确保Discord Webhook URL有效
-- 在N8N执行日志中监控重试尝试
-
-**VNC连接问题**:
-- 确认端口6080可访问
-- 检查Docker容器日志: `docker logs darkweb-forums-tracker-playwright`
-- 如有需要，重启Playwright容器
-
-**截图上传失败**:
-- 确保Supabase `screenshots` 存储桶存在且公开
-- 验证服务角色密钥具有存储权限
-- 检查存储桶大小限制和文件类型限制
-
-**论坛访问被阻止**:
-- 使用VNC手动解决CAPTCHA
-- 考虑添加代理支持以进行IP轮换
-- 检查论坛是否需要登录/注册
-
-### 数据库问题
-
-**缺少表错误**:
-```bash
-# 在Supabase SQL编辑器中验证表是否存在于新架构中
-SELECT id, post_title, post_date, last_post_date, post_alert, entity_name 
-FROM public.darkweb_forums LIMIT 1;
-
-# 如果缺少或架构过时，重新运行supabase/supabase.sql脚本
-```
-
-**RLS（行级安全）警告**:
-- 更新后的 `supabase/supabase.sql` 脚本包含适当的RLS策略
-- 如果看到RLS警告，重新运行脚本
-
-### 重置一切
-
-```bash
-# 重置本地容器（保留Supabase云数据）
-docker compose down -v --remove-orphans
-docker compose up -d
-
-# 如有需要，在N8N中重新导入工作流
-# 在N8N UI中重新配置凭证
-```
-
----
-
-## 📊 监控与维护
-
-### 性能监控
-
-- **N8N执行情况**: 监控工作流成功/失败率
-- **Supabase使用情况**: 跟踪数据库存储和API调用
-- **Discord速率限制**: 确保Webhook调用保持在限制范围内
-- **VNC使用情况**: 监控浏览器资源消耗
-
-### 定期维护
-
-- **关键词更新**: 每月审核并更新警报关键词
-- **论坛列表**: 添加新的相关论坛
-- **凭证轮换**: 定期更新API密钥和密码
-- **日志清理**: 归档N8N中的旧执行日志
-
----
-
-🎉 **准备就绪！** 您的暗网论坛跟踪器现已开始监控论坛并自动发送Discord警报。如需任何手动干预，请使用VNC访问 **http://localhost:6080**。
+**祝你狩猎愉快！Happy Hunting!** 🛡️
