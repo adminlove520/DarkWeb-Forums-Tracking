@@ -7,6 +7,9 @@ FROM mcr.m.daocloud.io/playwright/mcp:latest
 
 USER root
 
+# CRITICAL: Reset entrypoint to avoid "too many arguments" error (base image likely has ENTRYPOINT set)
+ENTRYPOINT []
+
 # Patch to allow external access (remove "Access is only allowed at localhost" check)
 # CRITICAL: Zeabur internal network is NOT localhost, so this patch is required.
 RUN find /app -name "*.js" -type f -exec sed -i 's/if (.* !== .*localhost.*) {/if (false) {/g' {} + || true
