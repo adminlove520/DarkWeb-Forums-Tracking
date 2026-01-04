@@ -6,20 +6,20 @@ FROM mcr.microsoft.com/playwright:v1.49.1-jammy
 # Set working directory
 WORKDIR /app
 
-# Initialize a new npm project (minimal)
-RUN npm init -y
+# Clone the repository directly (since it's not published on npm registry)
+RUN git clone https://github.com/torohash/playwright-sse-mcp-server.git .
 
-# Install the community-maintained SSE MCP server that supports remote access
-# Repo: https://github.com/torohash/playwright-sse-mcp-server
-RUN npm install @torohash/playwright-sse-mcp-server
+# Install dependencies (from the cloned package.json)
+RUN npm install
+
+# Build the project (if applicable) - ignoring errors if build script is missing
+RUN npm run build || true
 
 # Set environment variable to configure the listening port
-# Zeabur expects us to listen on 8831 (as per our previous config)
 ENV PORT=8831
 
 # Expose the port
 EXPOSE 8831
 
-# Run the server using npx
-# It will use the locally installed package in node_modules
-CMD ["npx", "@torohash/playwright-sse-mcp-server"]
+# Run the server via npm start
+CMD ["npm", "start"]
