@@ -884,43 +884,43 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.0-flash",
+        "model": "gpt-4o",
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
         -1136,
         -32
       ],
       "id": "68759977-5219-4ed2-8f0d-d6f8b4633e51",
-      "name": "Google Gemini 2.0 Flash模型",
+      "name": "OpenAI Chat Model (GPT-4o)",
       "credentials": {
-        "googlePalmApi": {
-          "id": "s0TtVLCRa3k8hm0V",
-          "name": "Google Gemini(PaLM) Api account"
+        "openAiApi": {
+          "id": "openAiApi",
+          "name": "OpenAI account"
         }
       }
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.5-flash-lite-preview-06-17",
+        "model": "gpt-4o-mini",
         "options": {
           "temperature": 0.2
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
         -1136,
         208
       ],
       "id": "712c5b3b-432c-4deb-9aaf-cbfa7d90323d",
-      "name": "Gemini 2.5 Flash Lite模型",
+      "name": "OpenAI Chat Model (GPT-4o Mini)",
       "credentials": {
-        "googlePalmApi": {
-          "id": "s0TtVLCRa3k8hm0V",
-          "name": "Google Gemini(PaLM) Api account"
+        "openAiApi": {
+          "id": "openAiApi",
+          "name": "OpenAI account"
         }
       }
     },

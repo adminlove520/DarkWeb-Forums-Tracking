@@ -574,21 +574,21 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.5-flash-lite-preview-06-17",
+        "model": "gpt-4o-mini",
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
         32,
         1296
       ],
       "id": "ddbcb947-4d0a-458d-bb92-f596c6ae8853",
-      "name": "Google Gemini 聊天模型",
+      "name": "OpenAI Chat Model (GPT-4o Mini)",
       "credentials": {
-        "googlePalmApi": {
-          "id": "s0TtVLCRa3k8hm0V",
-          "name": "Google Gemini(PaLM) Api account"
+        "openAiApi": {
+          "id": "openAiApi",
+          "name": "OpenAI account"
         }
       }
     },
@@ -607,7 +607,7 @@
     },
     {
       "parameters": {
-        "sseEndpoint": "http://host.docker.internal:8831/sse",
+        "sseEndpoint": "={{ $env.PLAYWRIGHT_MCP_ENDPOINT }}",
         "include": "except",
         "excludeTools": [
           "browser_file_upload",

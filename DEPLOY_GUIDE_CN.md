@@ -24,7 +24,7 @@
     *   同样记下连接信息。
 
 ### 第三步：部署 N8N (Git 服务)
-1.  点击 **Create Service** -> **Git** -> 选择您的 `darkweb-forums-tracker` 仓库。
+1.  点击 **Create Service** -> **Git** -> 选择您的 `darkweb-forums-tracking` 仓库。
 2.  部署后会失败（或者状态不对），不要慌，点击该服务进入 **Settings**：
     *   **Root Directory (根目录)**: 输入 `n8n` 并保存。
     *   **Watch Paths**: 输入 `n8n` (可选)。
@@ -36,17 +36,23 @@
     *   `QUEUE_BULL_REDIS_HOST`: 填入 Redis 服务的 Host (通常是 `redis`)
     *   `N8N_ENCRYPTION_KEY`: 自定义密钥
     *   `SUPABASE_URL`: 您的 Supabase 地址
-    *   **PORT**: `5678` (Zeabur 会自动识别并暴露此端口)
+    *   `PORT`: `5678` (Zeabur 会自动识别并暴露此端口)
+    *   `N8N_BLOCK_ENV_ACCESS_IN_NODE`: `false` (允许 N8N 读取环境变量，解决 [ERROR: access to env vars denied])
 4.  这步完成后，N8N 应该就能启动成功了。记得在 Networking 里绑定一个域名。
 
 ### 第四步：部署 Playwright MCP (Git 服务)
-1.  再次点击 **Create Service** -> **Git** -> 选择同一个 `darkweb-forums-tracker` 仓库。
+1.  再次点击 **Create Service** -> **Git** -> 选择同一个 `darkweb-forums-tracking` 仓库。
 2.  进入 **Settings**：
     *   **Root Directory**: 输入 `playwright-mcp` 并保存。
 3.  进入 **Variables**：
     *   `PLAYWRIGHT_MCP_PORT`: `8831`
     *   **PORT**: `8831` (告诉 Zeabur 暴露这个端口)
 4.  在 Networking 里绑定域名（用于 VNC 访问）。
+
+### 第五步：配置 AI 凭证 (OpenAI)
+1.  进入 N8N 界面，点击右上角 **Credentials**。
+2.  新建 **OpenAI API** 凭证，填入您的 Key (`sk-...`)。
+3.  打开导入的工作流，检查那两个 AI 节点 (GPT-4o) 是否选中了这个凭证。
 
 ---
 
@@ -56,8 +62,8 @@
 1.  SSH 登录 VPS。
 2.  拉取代码:
     ```bash
-    git clone https://github.com/<您的用户名>/darkweb-forums-tracker.git
-    cd darkweb-forums-tracker
+    git clone https://github.com/<您的用户名>/darkweb-forums-tracking.git
+    cd darkweb-forums-tracking
     ```
 3.  配置环境:
     ```bash

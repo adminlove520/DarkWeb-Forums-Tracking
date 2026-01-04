@@ -2,13 +2,13 @@
 
 > **全自动化的暗网论坛监控与威胁情报推送工具**
 
-厌倦了手动刷新暗网论坛来搜集威胁情报？我开发了这个自动化系统，利用 **Google Gemini** 驱动的 AI 智能体，模仿人类行为浏览论坛，抓取帖子，自动检测关键威胁，并将研判后的高价值情报（含截图和摘要）直接推送到你的 Discord 频道。
+厌倦了手动刷新暗网论坛来搜集威胁情报？我开发了这个自动化系统，利用 **OpenAI (GPT-4o)** 驱动的 AI 智能体，模仿人类行为浏览论坛，抓取帖子，自动检测关键威胁，并将研判后的高价值情报（含截图和摘要）直接推送到你的 Discord 频道。
 
 这是一个致力于将繁琐的“人肉”监控转化为**智能化、自动化**流程的开源项目，旨在帮助网络安全人员从重复劳动中解脱出来，全天候掌握地下威胁动态。
 
 <div align="center">
 
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)](https://docker.com) [![AI](https://img.shields.io/badge/Google_Gemini-AI-FF6B35?logo=googlegemini)](https://ai.google.dev) [![n8n](https://img.shields.io/badge/n8n-Automation-FF6D5A?logo=n8n)](https://n8n.io) [![Playwright MCP](https://custom-icon-badges.demolab.com/badge/Playwright_MCP-Browser_Automation-2EAD33?logo=playwright&logoColor=fff)](https://github.com/microsoft/playwright-mcp) [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?logo=supabase)](https://supabase.com) [![Discord](https://img.shields.io/badge/Discord-Integration-5865F2?logo=discord)](https://discord.com)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)](https://docker.com) [![AI](https://img.shields.io/badge/OpenAI-GPT_4o-412991?logo=openai)](https://openai.com) [![n8n](https://img.shields.io/badge/n8n-Automation-FF6D5A?logo=n8n)](https://n8n.io) [![Playwright MCP](https://custom-icon-badges.demolab.com/badge/Playwright_MCP-Browser_Automation-2EAD33?logo=playwright&logoColor=fff)](https://github.com/microsoft/playwright-mcp) [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?logo=supabase)](https://supabase.com) [![Discord](https://img.shields.io/badge/Discord-Integration-5865F2?logo=discord)](https://discord.com)
 
 <img src="images/forum_posts_discord.png" alt="Discord 威胁情报推送预览" width="350">
 
@@ -24,7 +24,7 @@
 
 **DarkWeb Forums Tracker** 为此而生：
 
-- ✨ **AI 智能拟人**：由 Google Gemini 驱动的 AI 智能体，模拟人类浏览行为，降低被封风险。
+- ✨ **AI 智能拟人**：由 OpenAI (GPT-4o) 驱动的 AI 智能体，模拟人类浏览行为，降低被封风险。
 - 🤖 **全自动工作流**：基于 n8n 编排，实现从抓取、分析到推送的全链路自动化。
 - 📱 **实时情报推送**：发现关键词命中（如 "Database", "Leak"）时，立即发送包含截图和 AI 摘要的 Discord 警报。
 - 🖥️ **人机协同 (VNC)**：遇到高难度验证码或首次登录时，可通过 VNC 界面远程介入，AI 随后自动接管。
@@ -40,7 +40,7 @@
 
 ## 🚀 快速开始
 
-**前提条件**：已安装 Docker，且拥有 Supabase Cloud 账户、Discord Webhook 地址及 Google Gemini API 密钥。
+**前提条件**：已安装 Docker，且拥有 Supabase Cloud 账户、Discord Webhook 地址及 OpenAI API 密钥。
 
 ```bash
 # 1. 克隆仓库
@@ -70,7 +70,7 @@ docker compose up -d
 
 - **[n8n](https://n8n.io)**：自动化的大脑，负责调度和逻辑处理。
 - **[Playwright MCP](https://github.com/microsoft/playwright-mcp)**：AI 驱动的浏览器，支持持久化会话和抗指纹检测。
-- **[Google Gemini](https://ai.google.dev)**：智能分析核心，负责理解帖子内容并生成摘要。
+- **[OpenAI (GPT-4o)](https://openai.com)**：智能分析核心，负责理解帖子内容并生成摘要。
 - **[Supabase](https://supabase.com)**：云端 PostgreSQL + 对象存储，用于持久化数据和截图。
 - **[Discord](https://discord.com)**：情报接收终端，支持富文本嵌入消息。
 
@@ -82,7 +82,7 @@ docker compose up -d
 4. **🔍 去重过滤**：通过数据库比对，自动过滤已处理的历史帖子。
 5. **🎯 关键词匹配**：根据设定的关键词（如企业名、泄露类型）进行精准筛选。
 6. **� 证据留存**：对命中警报的帖子自动全屏截图。
-7. **🧠 AI 研判**：Gemini 模型分析帖子内容，生成中文简报。
+7. **🧠 AI 研判**：GPT-4o 模型分析帖子内容，生成中文简报。
 8. **📱 警报触达**：Discord 收到包含截图、摘要、链接和风险等级的警报。
 9. **� 智能重试**：内置指数退避重试机制，应对网络波动或临时封锁。
 
