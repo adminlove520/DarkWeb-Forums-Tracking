@@ -12,6 +12,9 @@ RUN git clone https://github.com/torohash/playwright-sse-mcp-server.git .
 # Install dependencies (from the cloned package.json)
 RUN npm install
 
+# Ensure compatible browser binaries are installed
+RUN npx playwright install chromium
+
 # Build the project (if applicable) - ignoring errors if build script is missing
 RUN npm run build || true
 
