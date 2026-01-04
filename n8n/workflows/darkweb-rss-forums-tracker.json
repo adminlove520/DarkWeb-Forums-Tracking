@@ -50,13 +50,34 @@
         },
         {
             "parameters": {
+                "values": {
+                    "string": [
+                        {
+                            "name": "target_url",
+                            "value": "={{ $json.rss_url }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                380,
+                0
+            ],
+            "id": "debug-url",
+            "name": "Debug URL确认"
+        },
+        {
+            "parameters": {
                 "model": "gpt-4o-mini",
                 "options": {}
             },
             "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
             "typeVersion": 1,
             "position": [
-                380,
+                500,
                 240
             ],
             "id": "openai-model",
@@ -70,35 +91,27 @@
         },
         {
             "parameters": {
-                "sseEndpoint": "={{ $env.PLAYWRIGHT_MCP_ENDPOINT }}",
-                "include": "except",
-                "excludeTools": [
-                    "browser_file_upload",
-                    "browser_install",
-                    "browser_pdf_save",
-                    "browser_drag",
-                    "browser_generate_playwright_test"
-                ]
+                "sseEndpoint": "={{ $env.PLAYWRIGHT_MCP_ENDPOINT }}"
             },
             "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
             "typeVersion": 1,
             "position": [
-                540,
+                660,
                 240
             ],
             "id": "playwright-tool",
-            "name": "Playwright MCP工具"
+            "name": "Playwright RSS Fetcher"
         },
         {
             "parameters": {
                 "promptType": "define",
-                "text": "={{ 'Please visit the URL: ' + $json.rss_url + '\\n\\nI need you to return the FULL, RAW XML content of this page using the Playwright tool.\\n\\nIMPORTANT:\\n1. Navigate to the page.\\n2. Get the full page source.\\n3. Return ONLY the XML content. No markdown, no explanations.' }}",
+                "text": "={{ 'You are a precise data fetching robot. \\n\\nTARGET URL: ' + $json.target_url + '\\n\\nTASK:\\n1. Use the Playwright tool to navigate to the TARGET URL. \\n2. Get the full page source.\\n3. Return ONLY the XML content for the RSS feed.\\n\\nRESTRICTIONS:\\n- You must ONLY visit ' + $json.target_url + '.\\n- Do NOT visit darkforums.io or any other site.\\n- Do NOT hallucinate URLs.\\n- If the page is 502 or unreachable, return \"ERROR: 502\" strictly.' }}",
                 "options": {}
             },
             "type": "@n8n/n8n-nodes-langchain.agent",
             "typeVersion": 1.7,
             "position": [
-                460,
+                580,
                 0
             ],
             "id": "rss-fetch-agent",
@@ -107,7 +120,7 @@
         },
         {
             "parameters": {
-                "functionCode": "let content = items[0].json.output || \"\";\ncontent = content.replace(/```xml/g, \"\").replace(/```/g, \"\").trim();\nconst xmlStart = content.indexOf(\"<?xml\");\nif (xmlStart > -1) {\n  content = content.substring(xmlStart);\n}\nconst rssStart = content.indexOf(\"<rss\");\nif (rssStart > -1 && (xmlStart === -1 || rssStart < xmlStart)) {\n    content = content.substring(rssStart);\n}\n\nreturn [{ json: { xml: content, rss_url: $('split-feeds').item.json.rss_url, forum_name: $('split-feeds').item.json.forum_name } }];"
+                "functionCode": "let content = items[0].json.output || \"\";\ncontent = content.replace(/```xml/g, \"\").replace(/```/g, \"\").trim();\nconst xmlStart = content.indexOf(\"<?xml\");\nif (xmlStart > -1) {\n  content = content.substring(xmlStart);\n}\nconst rssStart = content.indexOf(\"<rss\");\nif (rssStart > -1 && (xmlStart === -1 || rssStart < xmlStart)) {\n    content = content.substring(rssStart);\n}\n\nif (!content || content.includes(\"ERROR: 502\")) {\n    // Return empty to trigger merge error path manually if needed, or structured error\n    return [{ json: { error: \"Fetch failed or 502\" } }];\n}\n\nreturn [{ json: { xml: content, rss_url: $('split-feeds').item.json.rss_url, forum_name: $('split-feeds').item.json.forum_name } }];"
             },
             "type": "n8n-nodes-base.function",
             "typeVersion": 1,
@@ -275,6 +288,17 @@
             "main": [
                 [
                     {
+                        "node": "Debug URL确认",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Debug URL确认": {
+            "main": [
+                [
+                    {
                         "node": "AI获取RSS内容",
                         "type": "main",
                         "index": 0
@@ -293,7 +317,7 @@
                 ]
             ]
         },
-        "Playwright MCP工具": {
+        "Playwright RSS Fetcher": {
             "ai_tool": [
                 [
                     {
