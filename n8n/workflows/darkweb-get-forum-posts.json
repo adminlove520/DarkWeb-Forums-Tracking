@@ -1302,7 +1302,7 @@
         ]
       ]
     },
-    "Google Gemini 2.0 Flash模型": {
+    "OpenAI Chat Model (GPT-4o)": {
       "ai_languageModel": [
         [
           {
@@ -1313,7 +1313,7 @@
         ]
       ]
     },
-    "Gemini 2.5 Flash Lite模型": {
+    "OpenAI Chat Model (GPT-4o Mini)": {
       "ai_languageModel": [
         [
           {

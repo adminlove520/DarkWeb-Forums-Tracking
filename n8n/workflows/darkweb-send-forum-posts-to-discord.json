@@ -963,7 +963,7 @@
         ]
       ]
     },
-    "Google Gemini 聊天模型": {
+    "OpenAI Chat Model (GPT-4o Mini)": {
       "ai_languageModel": [
         [
           {
