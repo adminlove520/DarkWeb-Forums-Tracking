@@ -1,30 +1,25 @@
 # syntax=docker/dockerfile:1
 # FILE: playwright-mcp/Dockerfile.zeabur
-# Special lightweight version for Zeabur (No VNC, No GUI) to save RAM.
+# Use the official Playwright image to ensure all browser dependencies are present.
+FROM mcr.microsoft.com/playwright:v1.49.1-jammy
 
-# Use the same base image
-FROM mcr.m.daocloud.io/playwright/mcp:latest
-
-USER root
-
-# CRITICAL: Reset entrypoint to avoid "too many arguments" error (base image likely has ENTRYPOINT set)
-ENTRYPOINT []
-
-# Patch to allow external access (remove "Access is only allowed at localhost" check)
-# CRITICAL: We force the code to think the host is always 'localhost' by replacing the property access.
-# This bypasses the security check: if (request.headers.host !== 'localhost') ...
-RUN find /app -name "*.js" -type f -exec sed -i "s/request.headers.host/'localhost'/g" {} + || true
-RUN find /app -name "*.js" -type f -exec sed -i "s/req.headers.host/'localhost'/g" {} + || true
-RUN find /app -name "*.js" -type f -exec sed -i "s/request.headers\['host'\]/'localhost'/g" {} + || true
-
-# Set environment variables
-ENV NODE_ENV=production
-ENV RAYCAST_MCP_SERVICE_PORT=8831
-
-USER 1000
+# Set working directory
 WORKDIR /app
 
+# Initialize a new npm project (minimal)
+RUN npm init -y
+
+# Install the community-maintained SSE MCP server that supports remote access
+# Repo: https://github.com/torohash/playwright-sse-mcp-server
+RUN npm install @torohash/playwright-sse-mcp-server
+
+# Set environment variable to configure the listening port
+# Zeabur expects us to listen on 8831 (as per our previous config)
+ENV PORT=8831
+
+# Expose the port
 EXPOSE 8831
 
-# Force 0.0.0.0 binding just in case
-CMD ["node", "cli.js", "--host", "0.0.0.0", "--port", "8831"]
+# Run the server using npx
+# It will use the locally installed package in node_modules
+CMD ["npx", "@torohash/playwright-sse-mcp-server"]
