@@ -12,7 +12,7 @@
         "embeds": {
           "values": [
             {
-              "description": "=`👤 发布人` **[{{ $json.post_author_name }}]({{ $json.post_author_link }})**\n`🕜 发布时间` **{{ $json.post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n`🗣️ 最后回复` **[{{ $json.last_post_author }}]({{ $json.last_post_author_link }})**\n`🕜 最后回复时间` **{{ $json.last_post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**",
+              "description": "=`👤 发布人` **[{{ $json.post_author_name }}]({{ $json.post_author_link }})**\n`🕜 发布时间` **{{ $json.post_date?.toDateTime().format('dd MMM yyyy HH:mm') }}**\n`🗣️ 最后回复` **[{{ $json.last_post_author }}]({{ $json.last_post_author_link }})**\n`🕜 最后回复时间` **{{ $json.last_post_date?.toDateTime().format('dd MMM yyyy HH:mm') }}**",
               "author": "={{ $('论坛帖子发到Discord').item.json.forum_name }}",
               "timestamp": "=",
               "title": "={{ $json.post_title }}",
@@ -49,7 +49,7 @@
         "embeds": {
           "values": [
             {
-              "description": "=`👤 发布人` **[{{ $json.post_author_name }}]({{ $json.post_author_link }})**\n`🕜 发布时间` **{{ $json.post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n`🗣️ 最后回复` **[{{ $json.last_post_author }}]({{ $json.last_post_author_link }})**\n`🕜 最后回复时间` **{{ $json.last_post_date.toDateTime().format('dd MMM yyyy HH:mm') }}**\n> {{ $json.post_summary }}\n`{{ $json.entity_name }}`",
+              "description": "=`👤 发布人` **[{{ $json.post_author_name }}]({{ $json.post_author_link }})**\n`🕜 发布时间` **{{ $json.post_date?.toDateTime().format('dd MMM yyyy HH:mm') }}**\n`🗣️ 最后回复` **[{{ $json.last_post_author }}]({{ $json.last_post_author_link }})**\n`🕜 最后回复时间` **{{ $json.last_post_date?.toDateTime().format('dd MMM yyyy HH:mm') }}**\n> {{ $json.post_summary }}\n`{{ $json.entity_name }}`",
               "author": "={{ $('论坛帖子发到Discord').item.json.forum_name }}🚨",
               "color": "#FF0000",
               "timestamp": "=",
