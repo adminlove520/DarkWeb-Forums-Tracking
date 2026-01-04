@@ -23,29 +23,42 @@
         },
         {
             "parameters": {
-                "url": "https://xforums.st/forums/-/index.rss"
-            },
-            "type": "n8n-nodes-base.rssFeedRead",
-            "typeVersion": 1.4,
-            "position": [
-                220,
-                0
-            ],
-            "id": "rss-read",
-            "name": "Read RSS Feed"
-        },
-        {
-            "parameters": {
-                "functionCode": "return items.map(item => {\n  return {\n    json: {\n      url: item.json.link,\n      title: item.json.title,\n      pubDate: item.json.pubDate\n    }\n  };\n});"
+                "functionCode": "return [\n  {\n    json: {\n      rss_url: \"https://xforums.st/forums/-/index.rss\",\n      forum_name: \"XForums\"\n    }\n  },\n  //在此处添加更多站点\n  // {\n  //   json: {\n  //     rss_url: \"https://another-forum.onion/rss\",\n  //     forum_name: \"AnotherForum\"\n  //   }\n  // }\n];"
             },
             "type": "n8n-nodes-base.function",
             "typeVersion": 1,
             "position": [
+                220,
+                0
+            ],
+            "id": "define-feeds",
+            "name": "定义RSS列表 (Define Feeds)"
+        },
+        {
+            "parameters": {
+                "url": "={{ $json.rss_url }}"
+            },
+            "type": "n8n-nodes-base.rssFeedRead",
+            "typeVersion": 1.4,
+            "position": [
                 440,
                 0
             ],
+            "id": "rss-read",
+            "name": "读取RSS (Read RSS)"
+        },
+        {
+            "parameters": {
+                "functionCode": "return items.map(item => {\n  return {\n    json: {\n      url: item.json.link,\n      title: item.json.title,\n      pubDate: item.json.pubDate,\n      source_rss: $('读取RSS (Read RSS)').item.json.rss_url\n    }\n  };\n});"
+            },
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                660,
+                0
+            ],
             "id": "format-rss-items",
-            "name": "Format Items"
+            "name": "格式化 (Format)"
         },
         {
             "parameters": {
@@ -55,11 +68,11 @@
             "type": "n8n-nodes-base.executeWorkflow",
             "typeVersion": 1,
             "position": [
-                660,
+                880,
                 0
             ],
             "id": "execute-subworkflow",
-            "name": "Analyze with AI Agent"
+            "name": "AI Agent分析"
         }
     ],
     "connections": {
@@ -67,29 +80,40 @@
             "main": [
                 [
                     {
-                        "node": "Read RSS Feed",
+                        "node": "定义RSS列表 (Define Feeds)",
                         "type": "main",
                         "index": 0
                     }
                 ]
             ]
         },
-        "Read RSS Feed": {
+        "定义RSS列表 (Define Feeds)": {
             "main": [
                 [
                     {
-                        "node": "Format Items",
+                        "node": "读取RSS (Read RSS)",
                         "type": "main",
                         "index": 0
                     }
                 ]
             ]
         },
-        "Format Items": {
+        "读取RSS (Read RSS)": {
             "main": [
                 [
                     {
-                        "node": "Analyze with AI Agent",
+                        "node": "格式化 (Format)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "格式化 (Format)": {
+            "main": [
+                [
+                    {
+                        "node": "AI Agent分析",
                         "type": "main",
                         "index": 0
                     }
