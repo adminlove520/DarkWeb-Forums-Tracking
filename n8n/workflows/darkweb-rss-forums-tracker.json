@@ -64,7 +64,11 @@
         {
             "parameters": {
                 "operation": "getAll",
-                "tableId": "forum_posts",
+                "tableId": {
+                    "__rl": true,
+                    "value": "darkweb_forums",
+                    "mode": "id"
+                },
                 "returnAll": true,
                 "filters": {
                     "conditions": [
