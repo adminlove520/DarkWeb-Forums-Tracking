@@ -23,7 +23,7 @@
         },
         {
             "parameters": {
-                "functionCode": "return [\n  {\n    json: {\n      rss_url: \"https://xforums.st/forums/-/index.rss\",\n      forum_name: \"XForums\"\n    }\n  },\n  //在此处添加更多站点\n  // {\n  //   json: {\n  //     rss_url: \"https://another-forum.onion/rss\",\n  //     forum_name: \"AnotherForum\"\n  //   }\n  // }\n];"
+                "functionCode": "return [\n  {\n    json: {\n      rss_url: \"https://xforums.st/forums/-/index.rss\",\n      forum_name: \"XForums\"\n    }\n  }\n];"
             },
             "type": "n8n-nodes-base.function",
             "typeVersion": 1,
@@ -32,11 +32,12 @@
                 0
             ],
             "id": "define-feeds",
-            "name": "定义RSS列表 (Define Feeds)"
+            "name": "定义RSS列表"
         },
         {
             "parameters": {
-                "url": "={{ $json.rss_url }}"
+                "url": "={{ $json.rss_url }}",
+                "options": {}
             },
             "type": "n8n-nodes-base.rssFeedRead",
             "typeVersion": 1.4,
@@ -45,11 +46,11 @@
                 0
             ],
             "id": "rss-read",
-            "name": "读取RSS (Read RSS)"
+            "name": "读取RSS"
         },
         {
             "parameters": {
-                "functionCode": "return items.map(item => {\n  return {\n    json: {\n      url: item.json.link,\n      title: item.json.title,\n      pubDate: item.json.pubDate,\n      source_rss: $('读取RSS (Read RSS)').item.json.rss_url\n    }\n  };\n});"
+                "functionCode": "return items.map(item => {\n  return {\n    json: {\n      url: item.json.link,\n      title: item.json.title,\n      pubDate: item.json.pubDate,\n      source_rss: $('读取RSS').item.json.rss_url,\n      forum_name: $('定义RSS列表').item.json.forum_name\n    }\n  };\n});"
             },
             "type": "n8n-nodes-base.function",
             "typeVersion": 1,
@@ -57,18 +58,75 @@
                 660,
                 0
             ],
-            "id": "format-rss-items",
-            "name": "格式化 (Format)"
+            "id": "format-items",
+            "name": "格式化数据"
+        },
+        {
+            "parameters": {
+                "operation": "getAll",
+                "tableId": "forum_posts",
+                "returnAll": true,
+                "filters": {
+                    "conditions": [
+                        {
+                            "key": "post_link",
+                            "value": "={{ $json.url }}",
+                            "operator": "eq"
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.supabase",
+            "typeVersion": 1,
+            "position": [
+                880,
+                0
+            ],
+            "id": "check-supabase",
+            "name": "检查是否已存在",
+            "credentials": {
+                "supabaseApi": {
+                    "id": "okGUlQOFiLX3NatJ",
+                    "name": "Supabase account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "boolean": [
+                        {
+                            "value1": "={{ $items(\"检查是否已存在\").length }}",
+                            "value2": 0
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                1100,
+                0
+            ],
+            "id": "check-if-new",
+            "name": "是否为新帖子?"
         },
         {
             "parameters": {
                 "workflowId": "sT0FP436BFPS5V7o",
-                "mode": "each"
+                "mode": "each",
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "post_link": "={{ $json.url }}",
+                        "forum_name": "={{ $json.forum_name }}"
+                    }
+                }
             },
             "type": "n8n-nodes-base.executeWorkflow",
             "typeVersion": 1,
             "position": [
-                880,
+                1320,
                 0
             ],
             "id": "execute-subworkflow",
@@ -80,36 +138,58 @@
             "main": [
                 [
                     {
-                        "node": "定义RSS列表 (Define Feeds)",
+                        "node": "定义RSS列表",
                         "type": "main",
                         "index": 0
                     }
                 ]
             ]
         },
-        "定义RSS列表 (Define Feeds)": {
+        "定义RSS列表": {
             "main": [
                 [
                     {
-                        "node": "读取RSS (Read RSS)",
+                        "node": "读取RSS",
                         "type": "main",
                         "index": 0
                     }
                 ]
             ]
         },
-        "读取RSS (Read RSS)": {
+        "读取RSS": {
             "main": [
                 [
                     {
-                        "node": "格式化 (Format)",
+                        "node": "格式化数据",
                         "type": "main",
                         "index": 0
                     }
                 ]
             ]
         },
-        "格式化 (Format)": {
+        "格式化数据": {
+            "main": [
+                [
+                    {
+                        "node": "检查是否已存在",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "检查是否已存在": {
+            "main": [
+                [
+                    {
+                        "node": "是否为新帖子?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "是否为新帖子?": {
             "main": [
                 [
                     {
