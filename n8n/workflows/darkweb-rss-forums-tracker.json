@@ -57,7 +57,7 @@
             "typeVersion": 1,
             "position": [
                 380,
-                220
+                240
             ],
             "id": "openai-model",
             "name": "OpenAI Model",
@@ -84,7 +84,7 @@
             "typeVersion": 1,
             "position": [
                 540,
-                220
+                240
             ],
             "id": "playwright-tool",
             "name": "Playwright MCP工具"
@@ -92,7 +92,7 @@
         {
             "parameters": {
                 "promptType": "define",
-                "text": "={{ 'Please visit the URL: ' + $json.rss_url + '\\n\\nI need you to return the FULL, RAW XML content of this page. Use the Playwright tool to navigate to it and get the page source/content.\\n\\nIMPORTANT:\\n1. Do NOT summarize or explain.\\n2. Do NOT wrap it in markdown code blocks if possible, but if you do, I will clean it.\\n3. The output must be valid XML.' }}",
+                "text": "={{ 'Please visit the URL: ' + $json.rss_url + '\\n\\nI need you to return the FULL, RAW XML content of this page using the Playwright tool.\\n\\nIMPORTANT:\\n1. Navigate to the page.\\n2. Get the full page source.\\n3. Return ONLY the XML content. No markdown, no explanations.' }}",
                 "options": {}
             },
             "type": "@n8n/n8n-nodes-langchain.agent",
@@ -134,7 +134,7 @@
         },
         {
             "parameters": {
-                "functionCode": "// Handle RSS structure variations\nlet posts = [];\ntry {\n  const channel = items[0].json.rss.channel;\n  const itemsList = channel.item || [];\n  posts = Array.isArray(itemsList) ? itemsList : [itemsList];\n} catch (e) {\n  // If parsing fails or structure is wrong, return empty to continue loop\n  posts = [];\n}\n\nreturn posts.map(post => {\n  return {\n    json: {\n      url: post.link,\n      title: post.title,\n      pubDate: post.pubDate,\n      forum_name: $('split-feeds').item.json.forum_name\n    }\n  };\n});"
+                "functionCode": "// Handle RSS structure\nlet posts = [];\ntry {\n  const channel = items[0].json.rss.channel;\n  const itemsList = channel.item || [];\n  posts = Array.isArray(itemsList) ? itemsList : [itemsList];\n} catch (e) {\n  posts = [];\n}\n\n// Add forum metadata\nreturn posts.map(post => {\n  return {\n    json: {\n      url: post.link,\n      title: post.title,\n      pubDate: post.pubDate,\n      forum_name: $('split-feeds').item.json.forum_name\n    }\n  };\n});"
             },
             "type": "n8n-nodes-base.function",
             "typeVersion": 1,
@@ -215,7 +215,7 @@
             "typeVersion": 1,
             "position": [
                 1850,
-                -100
+                -120
             ],
             "id": "execute-subworkflow",
             "name": "AI Agent分析"
@@ -364,7 +364,9 @@
                         "node": "AI Agent分析",
                         "type": "main",
                         "index": 0
-                    },
+                    }
+                ],
+                [
                     {
                         "node": "合并分支",
                         "type": "main",
