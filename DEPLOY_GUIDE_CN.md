@@ -77,3 +77,11 @@
 
 ---
 **总结**: Zeabur 拆分部署虽然步骤多一点，但能保证每个模块（数据库、N8N、Playwright）都独立运行，互不干扰，排查问题也最方便。
+
+## ❓ 常见问题 (Troubleshooting)
+
+### Q: 报错 "Browser specified in your config is not installed"
+**原因**: Docker 镜像里的浏览器版本和代码库里的 Playwright 版本不匹配。
+**解决**: 我们已经更新了 Dockerfile 修复此问题。
+**重要操作**: 请在 Zeabur 的 Playwright 服务页面，点击 **Redeploy (重新部署)**。
+> ⚠️ **注意**: 不要点 Restart (重启)，重启不会重新构建 Docker 镜像，必须点 **Redeploy** 才会应用我们刚才的修复。
