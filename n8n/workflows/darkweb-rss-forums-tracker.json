@@ -1,0 +1,103 @@
+{
+    "name": "darkweb-rss-forums-tracker",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "minutes",
+                            "minutes": 30
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.1,
+            "position": [
+                0,
+                0
+            ],
+            "id": "schedule-trigger",
+            "name": "Schedule Trigger"
+        },
+        {
+            "parameters": {
+                "url": "https://xforums.st/forums/-/index.rss"
+            },
+            "type": "n8n-nodes-base.rssFeedRead",
+            "typeVersion": 1.4,
+            "position": [
+                220,
+                0
+            ],
+            "id": "rss-read",
+            "name": "Read RSS Feed"
+        },
+        {
+            "parameters": {
+                "functionCode": "return items.map(item => {\n  return {\n    json: {\n      url: item.json.link,\n      title: item.json.title,\n      pubDate: item.json.pubDate\n    }\n  };\n});"
+            },
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                440,
+                0
+            ],
+            "id": "format-rss-items",
+            "name": "Format Items"
+        },
+        {
+            "parameters": {
+                "workflowId": "sT0FP436BFPS5V7o",
+                "mode": "each"
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1,
+            "position": [
+                660,
+                0
+            ],
+            "id": "execute-subworkflow",
+            "name": "Analyze with AI Agent"
+        }
+    ],
+    "connections": {
+        "Schedule Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Read RSS Feed",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Read RSS Feed": {
+            "main": [
+                [
+                    {
+                        "node": "Format Items",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Format Items": {
+            "main": [
+                [
+                    {
+                        "node": "Analyze with AI Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {},
+    "staticData": null,
+    "meta": null
+}
