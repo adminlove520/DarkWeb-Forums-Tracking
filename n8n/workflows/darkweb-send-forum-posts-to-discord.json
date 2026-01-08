@@ -247,7 +247,7 @@
             },
             {
               "fieldId": "post_screenshot_url",
-              "fieldValue": "={{ $env.SUPABASE_URL }}/storage/v1/object/screenshots/forum_posts/{{ $('循环警报帖子URL').item.json.screenshot_filename }}"
+              "fieldValue": "=https://mllfrjetoelmjmgdemlm.supabase.co/storage/v1/object/screenshots/forum_posts/{{ $('循环警报帖子URL').item.json.screenshot_filename }}"
             },
             {
               "fieldId": "post_visibility",
@@ -384,7 +384,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $env.SUPABASE_URL }}/storage/v1/object/screenshots/forum_posts/{{ $('循环警报帖子URL').item.json.screenshot_filename }}",
+        "url": "=https://mllfrjetoelmjmgdemlm.supabase.co/storage/v1/object/screenshots/forum_posts/{{ $('循环警报帖子URL').item.json.screenshot_filename }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "supabaseApi",
         "sendHeaders": true,
@@ -607,7 +607,7 @@
     },
     {
       "parameters": {
-        "sseEndpoint": "={{ $env.PLAYWRIGHT_MCP_ENDPOINT }}",
+        "sseEndpoint": "https://playwright-mcp.zeabur.app/sse",
         "include": "except",
         "excludeTools": [
           "browser_file_upload",

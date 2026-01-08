@@ -32,7 +32,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $env.SUPABASE_URL }}/rest/v1/rpc/check_existing_forum_posts",
+        "url": "https://mllfrjetoelmjmgdemlm.supabase.co/rest/v1/rpc/check_existing_forum_posts",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "supabaseApi",
         "sendHeaders": true,
@@ -475,6 +475,12 @@
               "name": "forum_url_path[1]",
               "value": "https://darkforums.io/Forum-Other-Leaks",
               "type": "string"
+            },
+            {
+              "id": "a9b1c2d3-e4f5-46a7-b8c9-d0e1f2a3b4c5",
+              "name": "forum_url_path[2]",
+              "value": "https://darkforums.io/Forum-Database-Discussion",
+              "type": "string"
             }
           ]
         },
@@ -523,7 +529,7 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "sT0FP436BFPS5V7o",
+          "value": "jrZPgmOsShHkTEFl",
           "mode": "list",
           "cachedResultName": "darkweb-send-forum-posts-to-discord"
         },
@@ -724,7 +730,7 @@
     },
     {
       "parameters": {
-        "sseEndpoint": "={{ $env.PLAYWRIGHT_MCP_ENDPOINT }}",
+        "sseEndpoint": "https://playwright-mcp.zeabur.app/sse",
         "include": "except",
         "excludeTools": [
           "browser_file_upload",
@@ -957,6 +963,89 @@
           "name": "Discord Darkforums Chat"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "const allPosts = $(\"AI 智能体\").first().json.output?.forum_posts || [];\nconst now = new Date();\nconst twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);\n\nconst activePosts = allPosts.filter(post => {\n  const lastPostDate = new Date(post.last_post_date);\n  return lastPostDate >= twentyFourHoursAgo;\n});\n\nif (activePosts.length === 0) {\n  return { hasActivePosts: false };\n}\n\nconst recapList = activePosts.map(post => `- [${post.post_title}](${post.post_link})`).join('\\n');\n\nreturn {\n  hasActivePosts: true,\n  recap_message: `### 📊 今日活跃动态回顾\\n以下是过去 24 小时内有新动静的帖子：\\n\\n${recapList}`\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        -48
+      ],
+      "id": "recap-filter-node-1",
+      "name": "筛选今日活跃帖子"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c16d",
+              "leftValue": "={{ $json.hasActivePosts }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        -48
+      ],
+      "id": "recap-if-node-1",
+      "name": "是否有活跃帖子?"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "options": {
+          "username": "DarkWeb Forums",
+          "wait": true
+        },
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.recap_message }}",
+              "author": "=📋 今日动态汇总 ({{ $('循环URL').item.json.forum_name }})",
+              "color": "#F1C40F",
+              "timestamp": "={{ $now.toISO() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        -160
+      ],
+      "id": "recap-discord-node-1",
+      "name": "通知今日活跃汇总",
+      "webhookId": "7b0843fe-ee9e-45de-8198-74a6adc41eb2",
+      "executeOnce": true,
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "RjbFciIefptLTUfH",
+          "name": "Discord Darkforums Chat"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1039,6 +1128,35 @@
         [
           {
             "node": "再次拆分论坛帖子",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "筛选今日活跃帖子",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "筛选今日活跃帖子": {
+      "main": [
+        [
+          {
+            "node": "是否有活跃帖子?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "是否有活跃帖子?": {
+      "main": [
+        [
+          {
+            "node": "通知今日活跃汇总",
             "type": "main",
             "index": 0
           }
